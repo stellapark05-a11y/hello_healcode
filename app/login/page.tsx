@@ -23,7 +23,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           </p>
           {params?.created ? (
             <p className="mt-5 rounded-2xl bg-[#e5eee8] px-4 py-3 text-sm">
-              계정이 생성되었습니다. 이메일 인증이 켜져 있다면 확인 후 로그인하세요.
+              계정이 생성되었습니다. 바로 로그인할 수 있습니다.
             </p>
           ) : null}
           {params?.error ? (
