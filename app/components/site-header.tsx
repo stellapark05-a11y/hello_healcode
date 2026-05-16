@@ -29,12 +29,20 @@ export function SiteHeader() {
           ))}
         </div>
 
-        <a
-          className="rounded-full bg-[#181817] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#303030]"
-          href={`mailto:${site.contactEmail}`}
-        >
-          문의
-        </a>
+        <div className="flex items-center gap-2">
+          <Link
+            className="hidden rounded-full border hairline px-5 py-2 text-sm font-semibold transition hover:bg-white sm:inline-flex"
+            href="/login"
+          >
+            로그인
+          </Link>
+          <a
+            className="rounded-full bg-[#181817] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#303030]"
+            href={`mailto:${site.contactEmail}`}
+          >
+            문의
+          </a>
+        </div>
       </nav>
     </header>
   );

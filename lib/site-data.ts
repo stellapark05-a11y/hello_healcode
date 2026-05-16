@@ -17,6 +17,7 @@ export const navItems = [
   { label: "방식", href: "/method" },
   { label: "활동", href: "/activities" },
   { label: "로드맵", href: "/roadmap" },
+  { label: "프로젝트", href: "/dashboard" },
 ];
 
 export const metrics = [
