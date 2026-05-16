@@ -4,22 +4,23 @@ import { navItems, site } from "@/lib/site-data";
 
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-30 border-b border-[#ded8c8] bg-[#f7f5ee]/92 backdrop-blur">
-      <nav className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10">
-        <Link className="flex items-center gap-3 font-black tracking-tight" href="/">
+    <header className="relative z-30">
+      <nav className="section-shell flex h-24 items-center justify-between">
+        <Link className="flex items-center gap-4" href="/">
           <Image
             alt="healcode sign"
-            className="h-10 w-10 rounded-md bg-[#101010] object-contain p-1"
-            height={40}
+            className="h-9 w-auto"
+            height={36}
             src="/healcode-sign.svg"
-            width={40}
+            width={73}
           />
-          <span className="text-lg">{site.name}</span>
+          <span className="text-lg font-semibold tracking-tight">{site.name}</span>
         </Link>
-        <div className="hidden items-center gap-7 md:flex">
+
+        <div className="hidden items-center rounded-full border hairline bg-white/75 p-1 shadow-sm shadow-black/[0.03] backdrop-blur md:flex">
           {navItems.map((item) => (
             <Link
-              className="text-sm font-semibold text-[#526058] transition hover:text-[#173b31]"
+              className="rounded-full px-5 py-2 text-sm font-medium text-[#4f4b46] transition hover:bg-[#181817] hover:text-white"
               href={item.href}
               key={item.href}
             >
@@ -27,8 +28,9 @@ export function SiteHeader() {
             </Link>
           ))}
         </div>
+
         <a
-          className="rounded-md bg-[#173b31] px-4 py-2 text-sm font-bold text-white transition hover:bg-[#245a4b]"
+          className="rounded-full bg-[#181817] px-5 py-2 text-sm font-semibold text-white transition hover:bg-[#303030]"
           href={`mailto:${site.contactEmail}`}
         >
           문의
