@@ -22,7 +22,7 @@ export default async function DashboardPage() {
           <div>
             <p className="eyebrow">Dashboard</p>
             <h1 className="mt-6 text-5xl font-medium tracking-tight">내 프로젝트</h1>
-            <p className="mt-5 text-[#6d6a65]">{user.email}</p>
+            <p className="mt-5 text-[#6d6a65]">{user.username ?? user.email}</p>
           </div>
           <div className="flex flex-wrap gap-3">
             <Link

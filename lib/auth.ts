@@ -3,11 +3,15 @@ import { cookies } from "next/headers";
 export type SessionUser = {
   id: string;
   email: string;
+  username: string | null;
 };
 
 type SupabaseUserResponse = {
   id: string;
   email: string;
+  user_metadata?: {
+    username?: string;
+  };
 };
 
 export async function getSessionToken() {
@@ -37,5 +41,9 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
   }
 
   const user = (await response.json()) as SupabaseUserResponse;
-  return { id: user.id, email: user.email };
+  return {
+    id: user.id,
+    email: user.email,
+    username: user.user_metadata?.username ?? null,
+  };
 }

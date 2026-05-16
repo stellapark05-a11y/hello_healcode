@@ -28,18 +28,26 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           ) : null}
           {params?.error ? (
             <p className="mt-5 rounded-2xl bg-[#ffe7e8] px-4 py-3 text-sm">
-              요청을 처리하지 못했습니다. 입력값과 Supabase 설정을 확인하세요.
+              {params.error === "invalid"
+                ? "아이디 또는 비밀번호를 다시 확인하세요."
+                : params.error === "username"
+                  ? "아이디는 영문, 숫자, 밑줄만 사용해 3자 이상 24자 이하로 입력하세요."
+                  : params.error === "signup"
+                    ? "이미 사용 중인 아이디이거나 계정을 만들 수 없습니다."
+                    : "요청을 처리하지 못했습니다. 잠시 후 다시 시도하세요."}
             </p>
           ) : null}
 
           <form action="/api/auth/login" className="mt-10 grid gap-5" method="post">
             <label className="grid gap-2">
-              <span className="text-sm text-[#6d6a65]">이메일</span>
+              <span className="text-sm text-[#6d6a65]">아이디</span>
               <input
                 className="rounded-2xl border hairline bg-white px-4 py-3 outline-none transition focus:border-[#181817]"
-                name="email"
+                name="username"
+                autoComplete="username"
+                pattern="[A-Za-z0-9_]{3,24}"
                 required
-                type="email"
+                type="text"
               />
             </label>
             <label className="grid gap-2">
@@ -47,6 +55,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               <input
                 className="rounded-2xl border hairline bg-white px-4 py-3 outline-none transition focus:border-[#181817]"
                 name="password"
+                autoComplete="current-password"
                 required
                 type="password"
               />
@@ -61,15 +70,18 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             <div className="mt-4 grid gap-4">
               <input
                 className="rounded-2xl border hairline bg-white px-4 py-3 outline-none transition focus:border-[#181817]"
-                name="email"
-                placeholder="이메일"
+                name="username"
+                placeholder="아이디"
+                autoComplete="username"
+                pattern="[A-Za-z0-9_]{3,24}"
                 required
-                type="email"
+                type="text"
               />
               <input
                 className="rounded-2xl border hairline bg-white px-4 py-3 outline-none transition focus:border-[#181817]"
                 name="password"
                 placeholder="비밀번호"
+                autoComplete="new-password"
                 required
                 type="password"
               />
