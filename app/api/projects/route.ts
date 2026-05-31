@@ -10,6 +10,10 @@ export async function POST(request: Request) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
+  if (user.status !== "active" || !user.canUploadPublic) {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
+
   const formData = await request.formData();
   const title = String(formData.get("title") ?? "");
   const summary = String(formData.get("summary") ?? "");
@@ -55,6 +59,7 @@ export async function POST(request: Request) {
       summary,
       project_url: projectUrl,
       artifact_url: artifactUrl,
+      is_public: true,
     }),
   });
 

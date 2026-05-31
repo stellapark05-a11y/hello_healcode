@@ -5,12 +5,40 @@ create table if not exists public.projects (
   summary text not null,
   project_url text,
   artifact_url text,
+  is_public boolean not null default false,
   created_at timestamptz not null default now()
 );
+
+alter table public.projects
+add column if not exists is_public boolean not null default false;
 
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   username text not null unique,
+  display_name text,
+  role text not null default 'member',
+  status text not null default 'pending',
+  points integer not null default 0,
+  can_upload_public boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+alter table public.profiles
+add column if not exists display_name text,
+add column if not exists role text not null default 'member',
+add column if not exists status text not null default 'pending',
+add column if not exists points integer not null default 0,
+add column if not exists can_upload_public boolean not null default false;
+
+create table if not exists public.membership_applications (
+  id uuid primary key default gen_random_uuid(),
+  name text not null,
+  email text not null,
+  discord text not null,
+  interest text not null,
+  experience text,
+  status text not null default 'pending',
+  reviewed_by uuid references auth.users(id),
   created_at timestamptz not null default now()
 );
 
@@ -32,8 +60,12 @@ language plpgsql
 security definer set search_path = public
 as $$
 begin
-  insert into public.profiles (id, username)
-  values (new.id, new.raw_user_meta_data ->> 'username');
+  insert into public.profiles (id, username, display_name)
+  values (
+    new.id,
+    new.raw_user_meta_data ->> 'username',
+    new.raw_user_meta_data ->> 'display_name'
+  );
   return new;
 end;
 $$;
@@ -50,6 +82,11 @@ create policy "members can read own projects"
 on public.projects
 for select
 using (auth.uid() = owner_id);
+
+create policy "public can read public projects"
+on public.projects
+for select
+using (is_public = true);
 
 create policy "members can insert own projects"
 on public.projects

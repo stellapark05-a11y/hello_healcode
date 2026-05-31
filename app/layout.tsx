@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "healcode | 건강의 문제를 코드로 풀어내는 실험 그룹",
+  title: "healcode",
   description:
-    "healcode는 일상 속 건강 문제를 데이터와 소프트웨어로 작게 검증하고 실제 도구로 만드는 팀입니다.",
+    "healcode 공식 소개문구는 Discord 원문을 기준으로 반영합니다.",
 };
 
 export default function RootLayout({

@@ -1,11 +1,11 @@
 export const site = {
   name: "healcode",
-  tagline: "건강의 문제를 코드로 풀어내는 실험 그룹",
-  eyebrow: "Health data, practical care, useful software",
+  tagline: "Discord 소개문구를 그대로 반영할 예정입니다",
+  eyebrow: "Healthcare x Code",
   description:
-    "healcode는 일상 속 건강 문제를 관찰하고, 데이터와 소프트웨어로 작게 검증하는 팀입니다. 기록, 상담 준비, 루틴 관리처럼 반복되는 불편을 빠르게 제품화하며 실제로 도움이 되는 도구를 만듭니다.",
-  primaryAction: "활동 보기",
-  secondaryAction: "팀 소개",
+    "Discord에 있는 공식 소개문구를 보내주면 이 영역에 그대로 교체합니다. 지금은 임의 소개문구를 제거하고 운영 기능 중심으로만 남겨두었습니다.",
+  primaryAction: "운영 구조 보기",
+  secondaryAction: "가입 신청",
   contactEmail: "hello@healcode.kr",
   discordUrl: "https://discord.com/",
   notionTierUrl:
@@ -13,18 +13,53 @@ export const site = {
 };
 
 export const navItems = [
-  { label: "소개", href: "/about" },
-  { label: "방식", href: "/method" },
-  { label: "활동", href: "/activities" },
-  { label: "로드맵", href: "/roadmap" },
-  { label: "프로젝트", href: "/dashboard" },
+  { label: "홈", href: "/" },
+  { label: "구성원", href: "/#members" },
+  { label: "가입 신청", href: "/login" },
+  { label: "멤버", href: "/dashboard" },
+  { label: "매니저", href: "/manager" },
 ];
 
 export const metrics = [
-  { label: "운영 형태", value: "Research group" },
-  { label: "핵심 분야", value: "Health x Code" },
-  { label: "현재 단계", value: "MVP planning" },
+  { label: "가입", value: "Manager approval" },
+  { label: "포인트", value: "Member dashboard" },
+  { label: "업로드", value: "Permission based" },
 ];
+
+export const confirmedOperations = [
+  {
+    title: "매니저 승인형 회원가입",
+    body: "신규 신청자는 폼을 제출하고, 매니저가 승인한 계정만 로그인할 수 있습니다.",
+  },
+  {
+    title: "멤버 포인트 확인",
+    body: "로그인한 멤버는 대시보드에서 본인의 포인트와 계정 상태를 확인합니다.",
+  },
+  {
+    title: "공개 프로젝트 업로드 권한",
+    body: "홍보용으로 공개할 프로젝트 업로드는 별도 권한을 받은 멤버에게만 열립니다.",
+  },
+];
+
+export const members = [
+  {
+    name: "대표",
+    role: "Manager",
+    body: "가입 신청 검토, 멤버 권한 관리, 포인트 운영 기준을 담당합니다. 실제 이름은 확정 후 교체합니다.",
+  },
+  {
+    name: "멤버",
+    role: "HealCoder",
+    body: "승인된 멤버는 개인 포인트를 확인하고, 권한을 받은 경우 공개 프로젝트를 업로드할 수 있습니다.",
+  },
+];
+
+export const representative = {
+  name: "대표 멤버",
+  role: "Founder / Manager",
+  description:
+    "healcode의 운영 방향을 잡고 신규 멤버 신청을 검토합니다. 실제 이름과 소개 문구는 최종 확인 후 교체할 수 있습니다.",
+};
 
 export const principles = [
   {
@@ -42,10 +77,10 @@ export const principles = [
 ];
 
 export const methods = [
-  "사용자 문제와 상황 맥락 리서치",
-  "건강 기록 데이터 구조화",
-  "Next.js 기반 프론트엔드 프로토타입",
-  "Cloud Run API와 운영 자동화",
+  "의료 현장의 문제를 발견하고 서비스 아이디어로 구체화",
+  "웹 서비스와 프로토타입 제작",
+  "AI와 데이터 분석을 활용한 헬스케어 실험",
+  "디스코드 기반 기록과 기여 포인트 운영",
 ];
 
 export const discordGuide = [
@@ -66,21 +101,21 @@ export const discordGuide = [
 export const activities = [
   {
     date: "2026.05",
-    title: "healcode 소개 페이지 공개",
-    body: "팀의 문제의식, 작업 방식, 진행 중인 실험을 한곳에서 볼 수 있는 첫 웹페이지를 준비했습니다.",
+    title: "healcode 소개 페이지 운영",
+    body: "단체 소개, 활동 기록, 가입 신청, 멤버 전용 기능을 한곳에서 관리하는 웹사이트를 구축하고 있습니다.",
     tag: "Website",
   },
   {
     date: "준비 중",
-    title: "건강 기록 MVP 기획",
-    body: "일상 기록을 정리하고 상담 전에 핵심 정보를 빠르게 확인할 수 있는 MVP 범위를 정의하고 있습니다.",
-    tag: "Product",
+    title: "승인형 멤버십 운영",
+    body: "가입 신청을 먼저 받고 매니저가 검토한 뒤 프로젝트 업로드 권한을 부여하는 흐름을 준비합니다.",
+    tag: "Membership",
   },
   {
     date: "준비 중",
-    title: "Cloud Run API 설계",
-    body: "활동 기록과 구성원 데이터를 API로 제공할 수 있도록 백엔드 구조와 배포 흐름을 설계합니다.",
-    tag: "Backend",
+    title: "포인트 대시보드",
+    body: "로그인한 멤버가 자신의 누적 포인트와 활동 상태를 직접 확인할 수 있도록 멤버 페이지를 확장합니다.",
+    tag: "Dashboard",
   },
 ];
 
@@ -128,9 +163,42 @@ export const tierCuts = [
 ];
 
 export const roadmap = [
-  "정적 소개 페이지 공개",
-  "구성원 프로필과 활동 로그 업데이트",
-  "Cloud Run 기반 API 연결",
-  "Vercel 프로덕션 배포",
-  "첫 번째 MVP 데모 공개",
+  "소개, 활동, 연락처 중심의 공개 페이지 정리",
+  "가입 신청 폼과 매니저 승인 흐름 도입",
+  "멤버 로그인과 포인트 대시보드 연결",
+  "Supabase 기반 인증과 데이터 권한 정리",
+  "Vercel 프론트엔드와 Cloud Run 백엔드 확장",
+];
+
+export const architecture = [
+  {
+    name: "Vercel",
+    role: "프론트엔드 배포",
+    body: "Next.js 페이지를 빠르게 배포하고 미리보기 환경을 운영합니다.",
+  },
+  {
+    name: "Supabase",
+    role: "인증 / 데이터 / 파일",
+    body: "멤버 로그인, 프로필, 포인트, 프로젝트 파일을 관리합니다.",
+  },
+  {
+    name: "Cloud Run",
+    role: "커스텀 백엔드",
+    body: "추후 별도 API, 배치 작업, 관리자용 로직이 필요해질 때 확장합니다.",
+  },
+];
+
+export const studyItems = [
+  {
+    name: "Supabase",
+    body: "Auth, RLS, profiles, applications, projects, storage 권한을 먼저 정리합니다.",
+  },
+  {
+    name: "Cloud Run",
+    body: "관리자 자동화, 포인트 정산, 외부 API가 필요해질 때 백엔드 후보로 검토합니다.",
+  },
+  {
+    name: "Vercel",
+    body: "Next.js 공개 사이트와 미리보기 배포를 담당하는 프론트엔드 배포 후보입니다.",
+  },
 ];

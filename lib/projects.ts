@@ -7,6 +7,7 @@ export type Project = {
   summary: string;
   project_url: string | null;
   artifact_url: string | null;
+  is_public: boolean;
   created_at: string;
 };
 
