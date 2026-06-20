@@ -1,3 +1,4 @@
+// TEST1234
 export const site = {
   name: "healcode",
   tagline: "Discord 소개문구를 그대로 반영할 예정입니다",
@@ -6,18 +7,19 @@ export const site = {
     "Discord에 있는 공식 소개문구를 보내주면 이 영역에 그대로 교체합니다. 지금은 임의 소개문구를 제거하고 운영 기능 중심으로만 남겨두었습니다.",
   primaryAction: "운영 구조 보기",
   secondaryAction: "가입 신청",
-  contactEmail: "hello@healcode.kr",
+  contactEmail: "yj7832@korea.ac.kr",
   discordUrl: "https://discord.com/",
   notionTierUrl:
     "https://ambiguous-skateboard-371.notion.site/HealCode-Points-and-Tier-Cuts-31757a295354807c93a5cfa6c6580633",
 };
 
 export const navItems = [
-  { label: "홈", href: "/" },
-  { label: "구성원", href: "/#members" },
-  { label: "가입 신청", href: "/login" },
-  { label: "멤버", href: "/dashboard" },
-  { label: "매니저", href: "/manager" },
+  { label: "home", href: "/" },
+  { label: "about", href: "/#about" },
+  { label: "project", href: "/#project" },
+  { label: "activities", href: "/#activities" },
+  { label: "contact&join us", href: "/#contact" },
+  { label: "login", href: "/login" },
 ];
 
 export const metrics = [
@@ -130,23 +132,43 @@ export const pointActivities = [
   {
     category: "프로젝트",
     items: [
-      { name: "팀 프로젝트 월간 참여", points: "15", note: "해당 월 활동 인정시" },
+      {
+        name: "팀 프로젝트 월간 참여",
+        points: "15",
+        note: "해당 월 활동 인정시",
+      },
       { name: "산출물 기여", points: "+10", note: "PR, 문서, 이슈 해결 등" },
-      { name: "개인 프로젝트 데모 및 최종 산출 공유", points: "20", note: "#build-lab 공유" },
+      {
+        name: "개인 프로젝트 데모 및 최종 산출 공유",
+        points: "20",
+        note: "#build-lab 공유",
+      },
     ],
   },
   {
     category: "교육과 커뮤니티",
     items: [
-      { name: "CrossXDomain session 진행", points: "40", note: "발표자/진행자" },
+      {
+        name: "CrossXDomain session 진행",
+        points: "40",
+        note: "발표자/진행자",
+      },
       { name: "CrossXDomain session 참여", points: "10", note: "참여자" },
-      { name: "디코 챗 참여", points: "5", note: "build-lab, looking-for-party 등" },
+      {
+        name: "디코 챗 참여",
+        points: "5",
+        note: "build-lab, looking-for-party 등",
+      },
     ],
   },
   {
     category: "운영",
     items: [
-      { name: "운영 회의 참여", points: "10", note: "모든 HealCoder 참여 가능" },
+      {
+        name: "운영 회의 참여",
+        points: "10",
+        note: "모든 HealCoder 참여 가능",
+      },
       { name: "운영진 의뢰 프로젝트 참여", points: "30", note: "운영 기여" },
       { name: "ops 운영진 활동 참여", points: "30", note: "운영진 활동" },
     ],
