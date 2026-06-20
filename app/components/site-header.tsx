@@ -10,7 +10,9 @@ export function SiteHeader({ tone = "light" }: SiteHeaderProps) {
   const dark = tone === "dark";
 
   return (
-    <header className={`relative z-30 ${dark ? "text-white" : "text-[#181817]"}`}>
+    <header
+      className={`relative z-30 ${dark ? "text-white" : "text-[#181817]"}`}
+    >
       <nav className="section-shell flex h-24 items-center justify-between">
         <Link className="flex items-center gap-4" href="/">
           <Image
@@ -20,7 +22,9 @@ export function SiteHeader({ tone = "light" }: SiteHeaderProps) {
             src="/healcode-sign.svg"
             width={73}
           />
-          <span className="text-lg font-semibold tracking-tight">{site.name}</span>
+          <span className="text-lg font-semibold tracking-tight">
+            {site.name}
+          </span>
         </Link>
 
         <div
@@ -43,29 +47,6 @@ export function SiteHeader({ tone = "light" }: SiteHeaderProps) {
               {item.label}
             </Link>
           ))}
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Link
-            className={`hidden rounded-full border px-5 py-2 text-sm font-semibold transition sm:inline-flex ${
-              dark
-                ? "border-white/15 text-white hover:bg-white hover:text-[#090b12]"
-                : "hairline hover:bg-white"
-            }`}
-            href="/login"
-          >
-            로그인
-          </Link>
-          <a
-            className={`rounded-full px-5 py-2 text-sm font-semibold transition ${
-              dark
-                ? "bg-white text-[#090b12] hover:bg-white/85"
-                : "bg-[#181817] text-white hover:bg-[#303030]"
-            }`}
-            href={`mailto:${site.contactEmail}`}
-          >
-            문의
-          </a>
         </div>
       </nav>
     </header>

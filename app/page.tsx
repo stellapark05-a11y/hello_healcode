@@ -1,11 +1,7 @@
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
 import { SpaceHero } from "./components/space-hero";
-import {
-  confirmedOperations,
-  members,
-  studyItems,
-} from "@/lib/site-data";
+import { confirmedOperations, members, studyItems } from "@/lib/site-data";
 
 export default function Home() {
   return (
@@ -15,81 +11,131 @@ export default function Home() {
       </div>
       <SpaceHero />
 
-      <section className="bg-[#f7f7f4] py-20 text-[#181817]" id="operations">
+      <section className="bg-[#f7f7f4] py-20 text-[#181817]" id="about">
         <div className="section-shell">
           <div className="mx-auto max-w-5xl">
-            <div>
-              <p className="eyebrow">01 / 운영 구조</p>
-              <h2 className="mt-4 max-w-3xl text-4xl font-medium leading-tight tracking-tight">
-                가입, 권한, 포인트만 명확하게 운영합니다.
-              </h2>
-              <p className="mt-5 max-w-2xl leading-8 text-[#6d6a65]">
-                공개 페이지는 소개와 가입 안내에 집중하고, 멤버 기능은 로그인 이후에만
-                확인할 수 있게 분리합니다.
-              </p>
-            </div>
-
-            <div className="mt-10 grid gap-4 md:grid-cols-3">
-              {confirmedOperations.map((card) => (
-                <article
-                  className="rounded-2xl border hairline bg-white p-6 shadow-sm shadow-black/[0.02]"
-                  key={card.title}
-                >
-                  <h3 className="text-xl font-medium tracking-tight">{card.title}</h3>
-                  <p className="mt-4 text-sm leading-7 text-[#6d6a65]">{card.body}</p>
-                </article>
-              ))}
-            </div>
+            <p className="eyebrow">01 / about</p>
+            <h2 className="mt-4 max-w-3xl text-4xl font-medium leading-tight tracking-tight">
+              Healthcare x Code
+            </h2>
+            <p className="mt-5 max-w-2xl leading-8 text-[#6d6a65]">
+              healcode는 의료 현장의 문제를 코드와 프로덕트로 풀어내는
+              커뮤니티입니다. 의료, 개발, 데이터, AI를 연결하여 실제로 사용할 수
+              있는 서비스를 만들고 공유합니다.
+            </p>
           </div>
         </div>
       </section>
 
-      <section className="border-t hairline bg-white py-20 text-[#181817]" id="members">
+      <section
+        className="border-t hairline bg-white py-20 text-[#181817]"
+        id="project"
+      >
         <div className="section-shell">
           <div className="mx-auto max-w-5xl">
-            <div>
-              <p className="eyebrow">02 / 구성원</p>
-              <h2 className="mt-4 max-w-3xl text-4xl font-medium leading-tight tracking-tight">
-                현재는 대표와 멤버 구조만 공개합니다.
-              </h2>
-              <p className="mt-5 max-w-2xl leading-8 text-[#6d6a65]">
-                구성원 실명과 상세 프로필은 공개 범위가 확정되면 이 섹션에서 교체합니다.
-              </p>
-            </div>
+            <p className="eyebrow">02 / project</p>
+            <h2 className="mt-4 max-w-3xl text-4xl font-medium leading-tight tracking-tight">
+              POMR Coach
+            </h2>
+            <p className="mt-5 max-w-2xl leading-8 text-[#6d6a65]">
+              POMR Coach는 의료 기록과 임상 사고 과정을 구조화하는 데 도움을
+              주는 프로젝트입니다.
+            </p>
+
+            <a
+              className="mt-8 inline-flex rounded-full bg-[#181817] px-6 py-3 text-sm font-semibold text-white transition hover:bg-black"
+              href="https://pomr-coach-516460607949.asia-northeast3.run.app/"
+              rel="noreferrer"
+              target="_blank"
+            >
+              POMR Coach 사이트 보기
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <section
+        className="border-t hairline bg-[#f7f7f4] py-20 text-[#181817]"
+        id="activities"
+      >
+        <div className="section-shell">
+          <div className="mx-auto max-w-5xl">
+            <p className="eyebrow">03 / activities</p>
+            <h2 className="mt-4 max-w-3xl text-4xl font-medium leading-tight tracking-tight">
+              Regular Activities
+            </h2>
 
             <div className="mt-10 grid gap-4 md:grid-cols-2">
-              {members.map((member) => (
-                <article
-                  className="rounded-2xl border hairline bg-[#fbfaf7] p-6"
-                  key={member.name}
-                >
-                  <p className="text-sm font-semibold text-[#6d6a65]">{member.role}</p>
-                  <h3 className="mt-3 text-3xl font-medium tracking-tight">{member.name}</h3>
-                  <p className="mt-4 text-sm leading-7 text-[#6d6a65]">{member.body}</p>
-                </article>
-              ))}
+              <article className="rounded-2xl border hairline bg-white p-6 shadow-sm shadow-black/[0.02]">
+                <h3 className="text-2xl font-medium tracking-tight">모각코</h3>
+                <p className="mt-2 text-sm font-semibold text-[#6d6a65]">
+                  모여서 각자 코딩
+                </p>
+                <p className="mt-4 text-sm leading-7 text-[#6d6a65]">
+                  바쁜 일상생활 중 잠깐이라도 코딩에 집중하고자 만들어진
+                  세션입니다. 각자 진행 중인 프로젝트나 학습 내용을 가지고 모여
+                  집중적으로 작업합니다.
+                </p>
+              </article>
+
+              <article className="rounded-2xl border hairline bg-white p-6 shadow-sm shadow-black/[0.02]">
+                <h3 className="text-2xl font-medium tracking-tight">
+                  Monthly Scrum
+                </h3>
+                <p className="mt-4 text-sm leading-7 text-[#6d6a65]">
+                  프로젝트 아이디어 및 성과, 의료현장에서의 인사이트를 공유하는
+                  자리입니다. 각자의 진행 상황을 나누고 다음 단계의 방향을 함께
+                  정리합니다.
+                </p>
+              </article>
             </div>
           </div>
         </div>
       </section>
 
-      <section className="border-t hairline bg-[#f7f7f4] py-20 text-[#181817]">
+      <section
+        className="border-t hairline bg-white py-20 text-[#181817]"
+        id="contact"
+      >
         <div className="section-shell">
           <div className="mx-auto max-w-5xl">
-            <p className="eyebrow">03 / 배포와 백엔드</p>
+            <p className="eyebrow">04 / contact & join us</p>
             <h2 className="mt-4 max-w-3xl text-4xl font-medium leading-tight tracking-tight">
-              Vercel, Supabase, Cloud Run을 역할별로 나눠 검토합니다.
+              Contact & Join Us
             </h2>
-            <div className="mt-10 overflow-hidden rounded-2xl border hairline bg-white">
-              {studyItems.map((item) => (
-                <article
-                  className="grid gap-3 border-b hairline p-6 last:border-b-0 md:grid-cols-[180px_1fr]"
-                  key={item.name}
+
+            <div className="mt-10 grid gap-4 md:grid-cols-2">
+              <article className="rounded-2xl border hairline bg-[#fbfaf7] p-6">
+                <p className="text-sm font-semibold text-[#6d6a65]">
+                  대표 이메일
+                </p>
+                <h3 className="mt-3 text-2xl font-medium tracking-tight">
+                  임예제
+                </h3>
+                <a
+                  className="mt-4 inline-block text-sm leading-7 text-[#6d6a65] underline underline-offset-4"
+                  href="mailto:yj7832@korea.ac.kr"
                 >
-                  <h3 className="text-xl font-medium tracking-tight">{item.name}</h3>
-                  <p className="text-sm leading-7 text-[#6d6a65]">{item.body}</p>
-                </article>
-              ))}
+                  yj7832@korea.ac.kr
+                </a>
+              </article>
+
+              <article className="rounded-2xl border hairline bg-[#fbfaf7] p-6">
+                <p className="text-sm font-semibold text-[#6d6a65]">
+                  가입 신청
+                </p>
+                <h3 className="mt-3 text-2xl font-medium tracking-tight">
+                  Google Form
+                </h3>
+                <a
+                  className="mt-4 inline-block rounded-full bg-[#181817] px-6 py-3 text-sm font-semibold text-white transition hover:bg-black"
+                  href="여기에_구글폼_링크_넣기"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  가입용 구글폼 열기
+                </a>
+              </article>
             </div>
           </div>
         </div>
