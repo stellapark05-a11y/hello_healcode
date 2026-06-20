@@ -4,7 +4,7 @@ import { getSupabaseConfig } from "@/lib/supabase";
 import { isValidUsername, normalizeUsername, usernameToAuthEmail } from "@/lib/usernames";
 
 type RouteContext = {
-  params: Promise<{ id: string }>;
+  params: Promise<unknown>;
 };
 
 type ApplicationRecord = {
@@ -27,7 +27,7 @@ export async function POST(request: Request, context: RouteContext) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  const { id } = await context.params;
+  const { id } = (await context.params) as { id: string };
   const formData = await request.formData();
   const username = normalizeUsername(String(formData.get("username") ?? ""));
   const password = String(formData.get("password") ?? "");

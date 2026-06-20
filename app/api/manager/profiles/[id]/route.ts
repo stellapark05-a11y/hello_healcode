@@ -3,7 +3,7 @@ import { getCurrentUser, isManager } from "@/lib/auth";
 import { getSupabaseConfig } from "@/lib/supabase";
 
 type RouteContext = {
-  params: Promise<{ id: string }>;
+  params: Promise<unknown>;
 };
 
 export async function POST(request: Request, context: RouteContext) {
@@ -13,7 +13,7 @@ export async function POST(request: Request, context: RouteContext) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  const { id } = await context.params;
+  const { id } = (await context.params) as { id: string };
   const formData = await request.formData();
   const points = Number(formData.get("points") ?? 0);
   const status = String(formData.get("status") ?? "pending");
