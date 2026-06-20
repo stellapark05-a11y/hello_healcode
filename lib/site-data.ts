@@ -1,4 +1,4 @@
-// TEST1234
+// TEST123456789
 export const site = {
   name: "healcode",
   tagline: "Discord 소개문구를 그대로 반영할 예정입니다",
