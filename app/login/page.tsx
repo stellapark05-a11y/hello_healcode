@@ -32,11 +32,11 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
           {params?.error ? (
             <p className="mt-5 rounded-2xl bg-[#ffe7e8] px-4 py-3 text-sm">
               {params.error === "invalid"
-                ? "아이디 또는 비밀번호를 다시 확인하세요."
+                ? "이메일·아이디 또는 비밀번호를 다시 확인하세요."
                 : params.error === "inactive"
                   ? "아직 승인되지 않았거나 이용이 중지된 계정입니다. 매니저에게 문의하세요."
                 : params.error === "username"
-                  ? "아이디는 영문, 숫자, 밑줄만 사용해 3자 이상 24자 이하로 입력하세요."
+                  ? "이메일 또는 아이디 형식을 확인하세요."
                 : params.error === "application"
                     ? "가입 신청을 저장하지 못했습니다. 입력값을 다시 확인하세요."
                     : "요청을 처리하지 못했습니다. 잠시 후 다시 시도하세요."}
@@ -52,12 +52,12 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               </p>
               <form action="/api/auth/login" className="mt-7 grid gap-5" method="post">
                 <label className="grid gap-2">
-                  <span className="text-sm text-[#64748b]">아이디</span>
+                  <span className="text-sm text-[#64748b]">이메일 또는 아이디</span>
                   <input
                     className="rounded-2xl border hairline bg-[#f8fafc] px-4 py-3 outline-none transition focus:border-[#111827]"
-                    name="username"
+                    name="identifier"
                     autoComplete="username"
-                    pattern="[A-Za-z0-9_]{3,24}"
+                    placeholder="name@example.com 또는 아이디"
                     required
                     type="text"
                   />
