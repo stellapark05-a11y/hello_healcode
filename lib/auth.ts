@@ -20,6 +20,7 @@ type SupabaseUserResponse = {
 };
 
 type ProfileResponse = {
+  username: string;
   display_name: string | null;
   role: string;
   status: string;
@@ -56,7 +57,7 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
   const user = (await response.json()) as SupabaseUserResponse;
 
   const profileResponse = await fetch(
-    `${supabaseUrl}/rest/v1/profiles?id=eq.${user.id}&select=display_name,role,status,points,can_upload_public`,
+    `${supabaseUrl}/rest/v1/profiles?id=eq.${user.id}&select=username,display_name,role,status,points,can_upload_public`,
     {
       headers: {
         apikey: supabaseAnonKey,
@@ -74,7 +75,7 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
   return {
     id: user.id,
     email: user.email,
-    username: user.user_metadata?.username ?? null,
+    username: profile?.username ?? user.user_metadata?.username ?? null,
     displayName: profile?.display_name ?? null,
     role: profile?.role ?? "member",
     status: profile?.status ?? "pending",
