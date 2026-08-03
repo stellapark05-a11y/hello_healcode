@@ -54,12 +54,16 @@ export default async function ManagerPage({ searchParams }: ManagerPageProps) {
           <p className="mt-6 rounded-2xl bg-[#ffe7e8] px-4 py-3 text-sm">
             {params.error === "points"
               ? "포인트와 사유를 확인해 주세요. 한 번에 ±5,000P까지 반영할 수 있습니다."
+              : params.error === "invite"
+                ? "초대 메일을 보내지 못했습니다. 이미 가입된 이메일인지 또는 Supabase 이메일 설정을 확인해 주세요."
               : "요청을 처리하지 못했습니다. 입력값을 다시 확인하세요."}
           </p>
         ) : null}
         {params?.updated ? (
           <p className="mt-6 rounded-2xl border border-[#cbd5e1] bg-[#e6edf5] px-4 py-3 text-sm">
-            변경 사항을 저장했습니다.
+            {params.updated === "invite"
+              ? "가입을 승인하고 신청 이메일로 계정 설정 링크를 보냈습니다."
+              : "변경 사항을 저장했습니다."}
           </p>
         ) : null}
 
@@ -94,7 +98,15 @@ export default async function ManagerPage({ searchParams }: ManagerPageProps) {
                 <article className="rounded-3xl border hairline bg-white p-6" key={application.id}>
                   <div className="flex flex-col justify-between gap-4 md:flex-row">
                     <div>
-                      <p className="text-sm text-[#64748b]">{application.status}</p>
+                      <p className="text-sm text-[#64748b]">
+                        {application.status === "pending"
+                          ? "승인 대기"
+                          : application.status === "invited"
+                            ? "초대 메일 전송됨"
+                            : application.status === "approved"
+                              ? "가입 완료"
+                              : application.status}
+                      </p>
                       <h3 className="mt-2 text-2xl font-medium tracking-tight">
                         {application.name}
                       </h3>
@@ -121,20 +133,12 @@ export default async function ManagerPage({ searchParams }: ManagerPageProps) {
                             placeholder="발급할 아이디"
                             required
                           />
-                          <input
-                            className="rounded-2xl border hairline bg-white px-4 py-3"
-                            minLength={8}
-                            name="password"
-                            placeholder="임시 비밀번호 (8자 이상)"
-                            required
-                            type="password"
-                          />
                           <label className="flex items-center gap-2 text-sm">
                             <input name="can_upload_public" type="checkbox" value="true" />
                             공개 프로젝트 업로드 허용
                           </label>
                           <button className="rounded-full bg-[#111827] px-5 py-3 text-sm font-semibold text-white">
-                            승인
+                            승인하고 초대 메일 보내기
                           </button>
                         </form>
                         <form action={`/api/manager/applications/${application.id}/reject`} method="post">
@@ -142,6 +146,11 @@ export default async function ManagerPage({ searchParams }: ManagerPageProps) {
                             거절
                           </button>
                         </form>
+                      </div>
+                    ) : application.status === "invited" ? (
+                      <div className="min-w-72 rounded-2xl border border-[#cbd5e1] bg-[#f2f5f9] p-4 text-sm leading-6 text-[#64748b]">
+                        신청 이메일로 계정 설정 링크를 보냈습니다. 링크에서 본인이
+                        비밀번호를 만들면 계정이 자동으로 활성화됩니다.
                       </div>
                     ) : null}
                   </div>
