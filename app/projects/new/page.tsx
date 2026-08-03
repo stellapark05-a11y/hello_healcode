@@ -22,7 +22,7 @@ export default async function NewProjectPage({ searchParams }: NewProjectPagePro
   }
 
   return (
-    <main className="min-h-screen bg-[#f6f3ed] text-[#181817]">
+    <main className="min-h-screen bg-[#f3f6fa] text-[#111827]">
       <SiteHeader />
       <section className="section-shell py-20 sm:py-28">
         <div className="mx-auto max-w-2xl">
@@ -42,11 +42,11 @@ export default async function NewProjectPage({ searchParams }: NewProjectPagePro
             method="post"
           >
             <label className="grid gap-2">
-              <span className="text-sm text-[#6d6a65]">프로젝트 이름</span>
+              <span className="text-sm text-[#64748b]">프로젝트 이름</span>
               <input className="rounded-2xl border hairline bg-white px-4 py-3" name="title" required />
             </label>
             <label className="grid gap-2">
-              <span className="text-sm text-[#6d6a65]">설명</span>
+              <span className="text-sm text-[#64748b]">설명</span>
               <textarea
                 className="min-h-36 rounded-2xl border hairline bg-white px-4 py-3"
                 name="summary"
@@ -54,15 +54,15 @@ export default async function NewProjectPage({ searchParams }: NewProjectPagePro
               />
             </label>
             <label className="grid gap-2">
-              <span className="text-sm text-[#6d6a65]">프로젝트 링크</span>
+              <span className="text-sm text-[#64748b]">프로젝트 링크</span>
               <input className="rounded-2xl border hairline bg-white px-4 py-3" name="project_url" type="url" />
             </label>
             <input name="is_public" type="hidden" value="true" />
             <label className="grid gap-2">
-              <span className="text-sm text-[#6d6a65]">결과물 파일</span>
+              <span className="text-sm text-[#64748b]">결과물 파일</span>
               <input className="rounded-2xl border hairline bg-white px-4 py-3" name="artifact" type="file" />
             </label>
-            <button className="mt-2 rounded-full bg-[#181817] px-6 py-3 font-semibold text-white">
+            <button className="mt-2 rounded-full bg-[#111827] px-6 py-3 font-semibold text-white">
               공개 프로젝트 업로드
             </button>
           </form>

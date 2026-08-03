@@ -1,12 +1,12 @@
 @import "tailwindcss";
 
 :root {
-  --paper: #f6f3ed;
-  --ink: #181817;
-  --muted: #6d6a65;
-  --line: #d9d3c8;
-  --surface: #fbfaf7;
-  --sage: #e5eee8;
+  --paper: #f3f6fa;
+  --ink: #111827;
+  --muted: #64748b;
+  --line: #cbd5e1;
+  --surface: #f8fafc;
+  --sage: #e6edf5;
   --green: #00c97b;
   --pink: #ff9297;
   --charcoal: #303030;
@@ -25,7 +25,9 @@ html {
 }
 
 body {
-  background: var(--paper);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(232, 238, 246, 0.78)),
+    var(--paper);
   color: var(--ink);
   font-family: Arial, Helvetica, sans-serif;
   letter-spacing: 0;
@@ -127,11 +129,11 @@ body {
 
 .space-object-stage {
   display: grid;
-  height: clamp(12rem, 28vw, 21rem);
-  margin-top: clamp(1rem, 2vw, 1.5rem);
+  height: clamp(10rem, 24vw, 18rem);
+  margin-top: clamp(0.75rem, 1.5vw, 1.25rem);
   perspective: 1200px;
   place-items: center;
-  width: min(100%, 58rem);
+  width: min(100%, 42rem);
 }
 
 .space-object {
@@ -139,19 +141,34 @@ body {
   --rotate-y: 0deg;
   --shift-x: 0px;
   --shift-y: 0px;
-  filter: drop-shadow(0 30px 45px rgba(0, 0, 0, 0.55));
+  aspect-ratio: 1254 / 568;
+  position: relative;
   transform:
     translate3d(var(--shift-x), var(--shift-y), 0)
     rotateX(var(--rotate-x))
     rotateY(var(--rotate-y));
   transform-style: preserve-3d;
-  transition: transform 180ms ease-out;
-  width: min(100%, 54rem);
+  transition: transform 140ms ease-out;
+  will-change: transform;
+  width: min(100%, 38rem);
 }
 
-.space-object-image {
-  height: auto;
+.space-object-layer {
+  backface-visibility: hidden;
+  height: 100%;
+  inset: 0;
+  object-fit: contain;
+  position: absolute;
   width: 100%;
+}
+
+.space-object-side {
+  filter: brightness(0.24) saturate(0.72) contrast(1.2);
+}
+
+.space-object-front {
+  filter: drop-shadow(0 30px 34px rgba(0, 0, 0, 0.5));
+  transform: translateZ(42px);
 }
 
 .space-primary-button,
@@ -198,12 +215,13 @@ body {
 
 .space-metric p {
   color: rgba(255, 255, 255, 0.48);
-  font-size: 0.875rem;
+  font-size: 0.8rem;
 }
 
 .space-metric strong {
   color: #ffffff;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  text-align: right;
 }
 
 @media (max-width: 767px) {
@@ -213,7 +231,7 @@ body {
 
   .space-metric {
     border-top: 1px solid rgba(255, 255, 255, 0.08);
-    padding-top: 0.9rem;
+    padding-top: 0.7rem;
   }
 }
 

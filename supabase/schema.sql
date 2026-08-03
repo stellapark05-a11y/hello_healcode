@@ -42,6 +42,19 @@ create table if not exists public.membership_applications (
   created_at timestamptz not null default now()
 );
 
+create table if not exists public.point_transactions (
+  id uuid primary key default gen_random_uuid(),
+  member_id uuid not null references public.profiles(id) on delete cascade,
+  delta integer not null check (delta <> 0),
+  balance_after integer not null check (balance_after >= 0),
+  reason text not null check (char_length(reason) between 3 and 120),
+  created_by uuid not null references public.profiles(id),
+  created_at timestamptz not null default now()
+);
+
+create index if not exists point_transactions_member_created_idx
+on public.point_transactions (member_id, created_at desc);
+
 alter table public.profiles enable row level security;
 
 create policy "members can read own profile"
@@ -53,6 +66,83 @@ create policy "members can update own profile"
 on public.profiles
 for update
 using (auth.uid() = id);
+
+alter table public.point_transactions enable row level security;
+
+create policy "members can read own point history"
+on public.point_transactions
+for select
+using (auth.uid() = member_id);
+
+create or replace function public.adjust_member_points(
+  target_member_id uuid,
+  point_delta integer,
+  point_reason text,
+  actor_id uuid
+)
+returns integer
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  previous_balance integer;
+  next_balance integer;
+  applied_delta integer;
+begin
+  if point_delta = 0 then
+    raise exception 'Point delta must not be zero';
+  end if;
+
+  if char_length(trim(point_reason)) < 3 then
+    raise exception 'Point reason is required';
+  end if;
+
+  select points
+  into previous_balance
+  from public.profiles
+  where id = target_member_id
+  for update;
+
+  if previous_balance is null then
+    raise exception 'Member not found';
+  end if;
+
+  next_balance := greatest(0, previous_balance + point_delta);
+  applied_delta := next_balance - previous_balance;
+
+  if applied_delta = 0 then
+    raise exception 'Point balance would not change';
+  end if;
+
+  update public.profiles
+  set points = next_balance
+  where id = target_member_id;
+
+  insert into public.point_transactions (
+    member_id,
+    delta,
+    balance_after,
+    reason,
+    created_by
+  )
+  values (
+    target_member_id,
+    applied_delta,
+    next_balance,
+    trim(point_reason),
+    actor_id
+  );
+
+  return next_balance;
+end;
+$$;
+
+revoke all on function public.adjust_member_points(uuid, integer, text, uuid)
+from public, anon, authenticated;
+
+grant execute on function public.adjust_member_points(uuid, integer, text, uuid)
+to service_role;
 
 create or replace function public.handle_new_user()
 returns trigger

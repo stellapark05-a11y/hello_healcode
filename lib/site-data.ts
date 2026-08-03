@@ -1,12 +1,11 @@
-// TEST123456789
 export const site = {
-  name: "healcode",
-  tagline: "Discord 소개문구를 그대로 반영할 예정입니다",
-  eyebrow: "Healthcare x Code",
+  name: "HealCode",
+  tagline: "Heal First. Build Together.",
+  eyebrow: "HEALTHCARE × TECHNOLOGY COMMUNITY",
   description:
-    "Discord에 있는 공식 소개문구를 보내주면 이 영역에 그대로 교체합니다. 지금은 임의 소개문구를 제거하고 운영 기능 중심으로만 남겨두었습니다.",
-  primaryAction: "운영 구조 보기",
-  secondaryAction: "가입 신청",
+    "의료인과 공학도가 서로의 언어를 배우고, 환자와 의료 현장을 먼저 이해하며, 필요한 해결책을 함께 만들어가는 커뮤니티입니다.",
+  primaryAction: "HealCode 소개",
+  secondaryAction: "가입 신청 · 멤버 로그인",
   contactEmail: "yj7832@korea.ac.kr",
   discordUrl: "https://discord.com/",
   notionTierUrl:
@@ -15,17 +14,16 @@ export const site = {
 
 export const navItems = [
   { label: "home", href: "/" },
-  { label: "about", href: "/#about" },
-  { label: "project", href: "/#project" },
-  { label: "activities", href: "/#activities" },
-  { label: "contact&join us", href: "/#contact" },
-  { label: "login", href: "/login" },
+  { label: "about", href: "/about" },
+  { label: "projects", href: "/project" },
+  { label: "activities", href: "/activities" },
+  { label: "contact & join", href: "/contact" },
 ];
 
 export const metrics = [
-  { label: "가입", value: "Manager approval" },
-  { label: "포인트", value: "Member dashboard" },
-  { label: "업로드", value: "Permission based" },
+  { label: "구성원", value: "Healer × Crafter" },
+  { label: "함께하는 방식", value: "Learn × Build × Share" },
+  { label: "우리가 먼저 보는 것", value: "Heal First" },
 ];
 
 export const confirmedOperations = [
@@ -65,24 +63,32 @@ export const representative = {
 
 export const principles = [
   {
-    title: "문제를 선명하게 정의합니다",
-    body: "건강 기록, 병원 방문 준비, 생활 습관 추적처럼 실제 사용자가 반복해서 겪는 불편을 관찰하고 작은 질문으로 나눕니다.",
+    title: "Heal First",
+    body: "기술보다 사람, 환자와 의료 현장의 필요를 먼저 봅니다.",
   },
   {
-    title: "작게 만들고 빠르게 검증합니다",
-    body: "프로토타입, 자동화 스크립트, API, 대시보드 등 검증 가능한 형태로 구현하고 사용 흐름을 빠르게 확인합니다.",
+    title: "Learn Across Domains",
+    body: "Healer와 Crafter가 서로를 단순한 의뢰인이나 작업자로 대하지 않고 서로의 언어를 배웁니다.",
   },
   {
-    title: "배운 것을 공유합니다",
-    body: "실험 로그와 회고를 남겨 팀 안팎의 사람들이 더 쉽게 따라오고 다음 제품으로 이어갈 수 있게 합니다.",
+    title: "Build Responsibly",
+    body: "빠른 구현만큼 맥락, 안전, 데이터와 결과에 대한 책임을 중요하게 생각합니다.",
+  },
+  {
+    title: "Share the Process",
+    body: "완성된 성과뿐 아니라 질문, 시행착오와 배운 점을 함께 나눕니다.",
+  },
+  {
+    title: "Small but Meaningful",
+    body: "규모와 홍보 수치보다 실제로 배우고 기여하는 관계와 경험을 우선합니다.",
   },
 ];
 
 export const methods = [
-  "의료 현장의 문제를 발견하고 서비스 아이디어로 구체화",
-  "웹 서비스와 프로토타입 제작",
-  "AI와 데이터 분석을 활용한 헬스케어 실험",
-  "디스코드 기반 기록과 기여 포인트 운영",
+  "의료 현장의 맥락과 문제를 함께 이해하기",
+  "서로의 전문 언어와 관점을 배우기",
+  "작은 실험과 프로토타입으로 가정을 검토하기",
+  "질문, 시행착오, 결과와 회고를 함께 남기기",
 ];
 
 export const discordGuide = [
@@ -102,24 +108,26 @@ export const discordGuide = [
 
 export const activities = [
   {
-    date: "2026.05",
-    title: "healcode 소개 페이지 운영",
-    body: "단체 소개, 활동 기록, 가입 신청, 멤버 전용 기능을 한곳에서 관리하는 웹사이트를 구축하고 있습니다.",
-    tag: "Website",
+    date: "정기 활동",
+    title: "모각코",
+    body: "각자가 진행 중인 학습·개발 작업을 가져와 함께 집중하는 온라인 세션입니다.",
+    tag: "Focus Session",
   },
   {
-    date: "준비 중",
-    title: "승인형 멤버십 운영",
-    body: "가입 신청을 먼저 받고 매니저가 검토한 뒤 프로젝트 업로드 권한을 부여하는 흐름을 준비합니다.",
-    tag: "Membership",
+    date: "월간 활동",
+    title: "Monthly Scrum",
+    body: "프로젝트 진행 상황, 임상 현장의 관찰, 배운 점과 막힌 점을 공유하고 피드백합니다.",
+    tag: "Share & Review",
   },
   {
-    date: "준비 중",
-    title: "포인트 대시보드",
-    body: "로그인한 멤버가 자신의 누적 포인트와 활동 상태를 직접 확인할 수 있도록 멤버 페이지를 확장합니다.",
-    tag: "Dashboard",
+    date: "2026.08.06",
+    title: "2026 Summer Demo Day",
+    body: "멤버의 프로젝트와 배움을 오프라인에서 공유하는 데모데이입니다.",
+    tag: "Demo Day",
   },
 ];
+
+export const contributors = ["수영", "정은", "재은"];
 
 export const pointActivities = [
   {

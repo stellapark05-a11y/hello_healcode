@@ -11,6 +11,7 @@ type ApplicationRecord = {
   id: string;
   name: string;
   email: string;
+  status: string;
 };
 
 type CreatedUser = {
@@ -34,12 +35,12 @@ export async function POST(request: Request, context: RouteContext) {
   const canUploadPublic = formData.get("can_upload_public") === "true";
   const config = getSupabaseConfig();
 
-  if (!isValidUsername(username) || !password) {
+  if (!isValidUsername(username) || password.length < 8) {
     return NextResponse.redirect(new URL("/manager?error=approve", request.url));
   }
 
   const applicationResponse = await fetch(
-    `${config.url}/rest/v1/membership_applications?id=eq.${id}&select=id,name,email&limit=1`,
+    `${config.url}/rest/v1/membership_applications?id=eq.${id}&select=id,name,email,status&limit=1`,
     {
       headers: {
         apikey: config.serviceRoleKey,
@@ -54,7 +55,7 @@ export async function POST(request: Request, context: RouteContext) {
     : [];
   const application = applications[0];
 
-  if (!application) {
+  if (!application || application.status !== "pending") {
     return NextResponse.redirect(new URL("/manager?error=missing", request.url));
   }
 

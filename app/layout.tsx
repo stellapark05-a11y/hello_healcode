@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "healcode",
+  title: "HealCode | Heal First. Build Together.",
   description:
-    "healcode 공식 소개문구는 Discord 원문을 기준으로 반영합니다.",
+    "의료인과 공학도가 환자와 의료 현장을 먼저 이해하고, 서로의 언어를 배우며, 필요한 해결책을 함께 탐색하고 구현하는 커뮤니티입니다.",
 };
 
 export default function RootLayout({

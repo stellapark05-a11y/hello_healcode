@@ -83,6 +83,9 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
   };
 }
 
-export function isManager(user: SessionUser | null) {
-  return user?.role === "manager" || user?.role === "admin";
+export function isManager(user: SessionUser | null): user is SessionUser {
+  return (
+    user?.status === "active" &&
+    (user.role === "manager" || user.role === "admin")
+  );
 }

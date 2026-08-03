@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   const experience = String(formData.get("experience") ?? "").trim();
 
   if (!name || !email || !discord || !interest) {
-    return NextResponse.redirect(new URL("/login?error=application", request.url));
+    return NextResponse.redirect(new URL("/login?error=application#apply", request.url));
   }
 
   const config = getSupabaseConfig();
@@ -32,8 +32,8 @@ export async function POST(request: Request) {
   });
 
   if (!response.ok) {
-    return NextResponse.redirect(new URL("/login?error=application", request.url));
+    return NextResponse.redirect(new URL("/login?error=application#apply", request.url));
   }
 
-  return NextResponse.redirect(new URL("/login?applied=1", request.url));
+  return NextResponse.redirect(new URL("/login?applied=1#apply", request.url));
 }

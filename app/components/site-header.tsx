@@ -1,17 +1,26 @@
 import Image from "next/image";
 import Link from "next/link";
 import { navItems, site } from "@/lib/site-data";
+import { getCurrentUser, isManager } from "@/lib/auth";
 
 type SiteHeaderProps = {
   tone?: "light" | "dark";
 };
 
-export function SiteHeader({ tone = "light" }: SiteHeaderProps) {
+export async function SiteHeader({ tone = "light" }: SiteHeaderProps) {
   const dark = tone === "dark";
+  const user = await getCurrentUser();
+  const accountItems = user
+    ? [
+        { label: "my page", href: "/dashboard" },
+        ...(isManager(user) ? [{ label: "manager", href: "/manager" }] : []),
+      ]
+    : [{ label: "member login", href: "/login" }];
+  const headerItems = [...navItems, ...accountItems];
 
   return (
     <header
-      className={`relative z-30 ${dark ? "text-white" : "text-[#181817]"}`}
+      className={`relative z-30 ${dark ? "text-white" : "text-[#111827]"}`}
     >
       <nav className="section-shell flex h-24 items-center justify-between">
         <Link className="flex items-center gap-4" href="/">
@@ -34,12 +43,12 @@ export function SiteHeader({ tone = "light" }: SiteHeaderProps) {
               : "hairline bg-white/75 shadow-black/[0.03]"
           }`}
         >
-          {navItems.map((item) => (
+          {headerItems.map((item) => (
             <Link
               className={`rounded-full px-5 py-2 text-sm font-medium transition ${
                 dark
                   ? "text-white/70 hover:bg-white hover:text-[#090b12]"
-                  : "text-[#4f4b46] hover:bg-[#181817] hover:text-white"
+                  : "text-[#596579] hover:bg-[#111827] hover:text-white"
               }`}
               href={item.href}
               key={item.href}
