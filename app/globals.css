@@ -129,7 +129,7 @@ body {
 
 .space-object-stage {
   display: grid;
-  height: clamp(10rem, 24vw, 18rem);
+  height: clamp(10rem, 31vw, 18rem);
   margin-top: clamp(0.75rem, 1.5vw, 1.25rem);
   perspective: 1200px;
   place-items: center;
