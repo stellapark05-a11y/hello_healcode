@@ -17,7 +17,6 @@ export const navItems = [
   { label: "about", href: "/about" },
   { label: "projects", href: "/project" },
   { label: "activities", href: "/activities" },
-  { label: "contact & join", href: "/contact" },
 ];
 
 export const metrics = [
@@ -232,3 +231,4 @@ export const studyItems = [
     body: "Next.js 공개 사이트와 미리보기 배포를 담당하는 프론트엔드 배포 후보입니다.",
   },
 ];
+
