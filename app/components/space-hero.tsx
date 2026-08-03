@@ -93,7 +93,7 @@ export function SpaceHero() {
               />
             </div>
           </div>
-          <h1 className="mt-5 text-4xl font-semibold leading-none text-white sm:mt-6 sm:text-6xl lg:text-7xl">
+          <h1 className="mt-12 text-4xl font-semibold leading-none text-white sm:text-6xl lg:text-7xl">
             {site.name}
           </h1>
           <h2 className="mt-4 text-xl font-medium tracking-tight text-white/90 sm:text-3xl">
