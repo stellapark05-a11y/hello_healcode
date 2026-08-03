@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SiteFooter } from "../components/site-footer";
 import { SiteHeader } from "../components/site-header";
@@ -34,11 +35,41 @@ export default async function ManagerPage({ searchParams }: ManagerPageProps) {
     <main className="min-h-screen bg-[#f3f6fa] text-[#111827]">
       <SiteHeader />
       <section className="section-shell py-20 sm:py-28">
-        <p className="eyebrow">Manager</p>
-        <h1 className="mt-6 text-5xl font-medium tracking-tight">매니저 콘솔</h1>
-        <p className="mt-5 max-w-2xl leading-7 text-[#64748b]">
-          가입 승인, 계정 상태, 공개 권한과 포인트 이력을 한곳에서 관리합니다.
-        </p>
+        <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+          <div>
+            <p className="eyebrow">Manager</p>
+            <h1 className="mt-6 text-5xl font-medium tracking-tight">매니저 콘솔</h1>
+            <p className="mt-5 max-w-2xl leading-7 text-[#64748b]">
+              가입 승인, 계정 상태, 공개 권한과 포인트 이력을 한곳에서 관리합니다.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-3">
+            <Link
+              className="rounded-full border hairline px-5 py-3 text-sm font-semibold"
+              href="/dashboard"
+            >
+              마이페이지
+            </Link>
+            <Link
+              className={`rounded-full px-5 py-3 text-sm font-semibold ${
+                user.canUploadPublic
+                  ? "bg-[#111827] text-white"
+                  : "pointer-events-none border hairline text-[#7b8798]"
+              }`}
+              href="/projects/new"
+            >
+              공개 프로젝트 올리기
+            </Link>
+            <form action="/api/auth/logout" method="post">
+              <button
+                className="rounded-full border hairline px-5 py-3 text-sm font-semibold"
+                type="submit"
+              >
+                로그아웃
+              </button>
+            </form>
+          </div>
+        </div>
 
         {params?.error ? (
           <p className="mt-6 rounded-2xl bg-[#ffe7e8] px-4 py-3 text-sm">
@@ -231,3 +262,4 @@ export default async function ManagerPage({ searchParams }: ManagerPageProps) {
     </main>
   );
 }
+
