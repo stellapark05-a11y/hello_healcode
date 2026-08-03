@@ -15,15 +15,20 @@ export async function SiteHeader({ tone = "light" }: SiteHeaderProps) {
         { label: "my page", href: "/dashboard" },
         ...(isManager(user) ? [{ label: "manager", href: "/manager" }] : []),
       ]
-    : [{ label: "member login", href: "/login" }];
+    : [{ label: "members", href: "/login" }];
   const headerItems = [...navItems, ...accountItems];
+  const accountClassName = `rounded-full px-5 py-2 text-sm font-medium transition ${
+    dark
+      ? "text-white/70 hover:bg-white hover:text-[#090b12]"
+      : "text-[#596579] hover:bg-[#111827] hover:text-white"
+  }`;
 
   return (
     <header
       className={`relative z-30 ${dark ? "text-white" : "text-[#111827]"}`}
     >
-      <nav className="section-shell flex h-24 items-center justify-between">
-        <Link className="flex items-center gap-4" href="/">
+      <nav className="section-shell grid h-24 grid-cols-[1fr_auto_1fr] items-center">
+        <Link className="flex w-fit items-center gap-4 justify-self-start" href="/">
           <Image
             alt="healcode sign"
             className="h-9 w-auto"
@@ -45,19 +50,25 @@ export async function SiteHeader({ tone = "light" }: SiteHeaderProps) {
         >
           {headerItems.map((item) => (
             <Link
-              className={`rounded-full px-5 py-2 text-sm font-medium transition ${
-                dark
-                  ? "text-white/70 hover:bg-white hover:text-[#090b12]"
-                  : "text-[#596579] hover:bg-[#111827] hover:text-white"
-              }`}
+              className={accountClassName}
               href={item.href}
               key={item.href}
             >
               {item.label}
             </Link>
           ))}
+          {user ? (
+            <form action="/api/auth/logout" method="post">
+              <button className={accountClassName} type="submit">
+                logout
+              </button>
+            </form>
+          ) : null}
         </div>
+
+        <div aria-hidden="true" />
       </nav>
     </header>
   );
 }
+
