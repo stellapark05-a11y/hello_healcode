@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser, isManager } from "@/lib/auth";
 import { getSupabaseConfig } from "@/lib/supabase";
-import { isValidUsername, normalizeUsername, usernameToAuthEmail } from "@/lib/usernames";
+import { isValidUsername, normalizeUsername } from "@/lib/usernames";
 
 type RouteContext = {
   params: Promise<unknown>;
@@ -14,7 +14,7 @@ type ApplicationRecord = {
   status: string;
 };
 
-type CreatedUser = {
+type InvitedUser = {
   id?: string;
   user?: {
     id: string;
@@ -31,11 +31,10 @@ export async function POST(request: Request, context: RouteContext) {
   const { id } = (await context.params) as { id: string };
   const formData = await request.formData();
   const username = normalizeUsername(String(formData.get("username") ?? ""));
-  const password = String(formData.get("password") ?? "");
   const canUploadPublic = formData.get("can_upload_public") === "true";
   const config = getSupabaseConfig();
 
-  if (!isValidUsername(username) || password.length < 8) {
+  if (!isValidUsername(username)) {
     return NextResponse.redirect(new URL("/manager?error=approve", request.url));
   }
 
@@ -59,7 +58,12 @@ export async function POST(request: Request, context: RouteContext) {
     return NextResponse.redirect(new URL("/manager?error=missing", request.url));
   }
 
-  const userResponse = await fetch(`${config.url}/auth/v1/admin/users`, {
+  const inviteUrl = new URL(`${config.url}/auth/v1/invite`);
+  inviteUrl.searchParams.set(
+    "redirect_to",
+    new URL("/auth/setup-password", request.url).toString(),
+  );
+  const userResponse = await fetch(inviteUrl, {
     method: "POST",
     headers: {
       apikey: config.serviceRoleKey,
@@ -67,10 +71,8 @@ export async function POST(request: Request, context: RouteContext) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      email: usernameToAuthEmail(username),
-      password,
-      email_confirm: true,
-      user_metadata: {
+      email: application.email.trim().toLowerCase(),
+      data: {
         username,
         display_name: application.name,
         contact_email: application.email,
@@ -79,17 +81,17 @@ export async function POST(request: Request, context: RouteContext) {
   });
 
   if (!userResponse.ok) {
-    return NextResponse.redirect(new URL("/manager?error=create-user", request.url));
+    return NextResponse.redirect(new URL("/manager?error=invite", request.url));
   }
 
-  const created = (await userResponse.json()) as CreatedUser;
+  const created = (await userResponse.json()) as InvitedUser;
   const userId = created.id ?? created.user?.id;
 
   if (!userId) {
-    return NextResponse.redirect(new URL("/manager?error=create-user", request.url));
+    return NextResponse.redirect(new URL("/manager?error=invite", request.url));
   }
 
-  await fetch(`${config.url}/rest/v1/profiles?on_conflict=id`, {
+  const profileResponse = await fetch(`${config.url}/rest/v1/profiles?on_conflict=id`, {
     method: "POST",
     headers: {
       apikey: config.serviceRoleKey,
@@ -101,14 +103,29 @@ export async function POST(request: Request, context: RouteContext) {
       id: userId,
       username,
       display_name: application.name,
-      status: "active",
+      status: "invited",
       role: "member",
       points: 0,
       can_upload_public: canUploadPublic,
     }),
   });
 
-  await fetch(`${config.url}/rest/v1/membership_applications?id=eq.${id}`, {
+  if (!profileResponse.ok) {
+    await fetch(`${config.url}/auth/v1/admin/users/${userId}`, {
+      method: "DELETE",
+      headers: {
+        apikey: config.serviceRoleKey,
+        Authorization: `Bearer ${config.serviceRoleKey}`,
+      },
+      cache: "no-store",
+    });
+
+    return NextResponse.redirect(new URL("/manager?error=profile", request.url));
+  }
+
+  const applicationUpdateResponse = await fetch(
+    `${config.url}/rest/v1/membership_applications?id=eq.${id}`,
+    {
     method: "PATCH",
     headers: {
       apikey: config.serviceRoleKey,
@@ -117,10 +134,15 @@ export async function POST(request: Request, context: RouteContext) {
       Prefer: "return=minimal",
     },
     body: JSON.stringify({
-      status: "approved",
+      status: "invited",
       reviewed_by: manager?.id,
     }),
-  });
+    },
+  );
 
-  return NextResponse.redirect(new URL("/manager", request.url));
+  if (!applicationUpdateResponse.ok) {
+    return NextResponse.redirect(new URL("/manager?error=application", request.url));
+  }
+
+  return NextResponse.redirect(new URL("/manager?updated=invite", request.url));
 }
