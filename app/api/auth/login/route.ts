@@ -17,7 +17,9 @@ type LoginProfile = {
 
 export async function POST(request: Request) {
   const formData = await request.formData();
-  const username = normalizeUsername(String(formData.get("username") ?? ""));
+  const identifier = String(formData.get("identifier") ?? formData.get("username") ?? "")
+    .trim()
+    .toLowerCase();
   const password = String(formData.get("password") ?? "");
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -26,9 +28,15 @@ export async function POST(request: Request) {
     return NextResponse.redirect(new URL("/login?error=config", request.url));
   }
 
-  if (!isValidUsername(username)) {
+  const isEmail = identifier.includes("@");
+
+  if ((!isEmail && !isValidUsername(identifier)) || (isEmail && identifier.length > 254)) {
     return NextResponse.redirect(new URL("/login?error=username", request.url));
   }
+
+  const email = isEmail
+    ? identifier
+    : usernameToAuthEmail(normalizeUsername(identifier));
 
   const response = await fetch(`${supabaseUrl}/auth/v1/token?grant_type=password`, {
     method: "POST",
@@ -36,7 +44,7 @@ export async function POST(request: Request) {
       apikey: supabaseAnonKey,
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ email: usernameToAuthEmail(username), password }),
+    body: JSON.stringify({ email, password }),
   });
 
   if (!response.ok) {
