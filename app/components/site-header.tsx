@@ -12,10 +12,10 @@ export async function SiteHeader({ tone = "light" }: SiteHeaderProps) {
   const user = await getCurrentUser();
   const accountItems = user
     ? [
-        { label: "my page", href: "/dashboard" },
-        ...(isManager(user) ? [{ label: "manager", href: "/manager" }] : []),
+        { label: "My Page", href: "/dashboard" },
+        ...(isManager(user) ? [{ label: "Manager", href: "/manager" }] : []),
       ]
-    : [{ label: "member login", href: "/login" }];
+    : [{ label: "Member Login", href: "/login" }];
   const accountClassName = `whitespace-nowrap rounded-full px-3 py-2 text-xs font-medium transition sm:px-4 sm:text-sm ${
     dark
       ? "text-white/70 hover:bg-white hover:text-[#090b12]"
@@ -26,7 +26,7 @@ export async function SiteHeader({ tone = "light" }: SiteHeaderProps) {
     <header
       className={`relative z-30 ${dark ? "text-white" : "text-[#111827]"}`}
     >
-      <nav className="section-shell grid min-h-24 grid-cols-[auto_1fr] items-center gap-3 py-4 sm:gap-5 xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
+      <nav className="section-shell grid min-h-24 grid-cols-[minmax(0,1fr)_auto] items-center gap-x-3 gap-y-2 py-4 sm:gap-x-5 xl:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]">
         <Link className="flex w-fit items-center gap-4" href="/">
           <Image
             alt="healcode sign"
@@ -41,7 +41,7 @@ export async function SiteHeader({ tone = "light" }: SiteHeaderProps) {
         </Link>
 
         <div
-          className={`hidden items-center justify-self-center rounded-full border p-1 shadow-sm backdrop-blur xl:flex ${
+          className={`col-span-2 row-start-2 flex max-w-full items-center justify-self-stretch overflow-x-auto rounded-full border p-1 shadow-sm backdrop-blur xl:col-span-1 xl:col-start-2 xl:row-start-1 xl:justify-self-center xl:overflow-visible ${
             dark
               ? "border-white/15 bg-white/8 shadow-black/20"
               : "hairline bg-white/75 shadow-black/[0.03]"
@@ -58,7 +58,7 @@ export async function SiteHeader({ tone = "light" }: SiteHeaderProps) {
           ))}
         </div>
 
-        <div className="flex min-w-0 items-center justify-self-end">
+        <div className="col-start-2 row-start-1 flex min-w-0 items-center justify-self-end xl:col-start-3">
           {accountItems.map((item) => (
             <Link className={accountClassName} href={item.href} key={item.href}>
               {item.label}
@@ -67,7 +67,7 @@ export async function SiteHeader({ tone = "light" }: SiteHeaderProps) {
           {user ? (
             <form action="/api/auth/logout" method="post">
               <button className={accountClassName} type="submit">
-                logout
+                Logout
               </button>
             </form>
           ) : null}
