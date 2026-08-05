@@ -13,11 +13,11 @@ export const site = {
 };
 
 export const navItems = [
-  { label: "home", href: "/" },
-  { label: "about", href: "/about" },
-  { label: "projects", href: "/project" },
-  { label: "activities", href: "/activities" },
-  { label: "contact & join", href: "/contact" },
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Projects", href: "/project" },
+  { label: "Activities", href: "/activities" },
+  { label: "Contact & Join", href: "/contact" },
 ];
 
 export const metrics = [
