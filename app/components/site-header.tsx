@@ -41,21 +41,35 @@ export async function SiteHeader({ tone = "light" }: SiteHeaderProps) {
         </Link>
 
         <div
-          className={`col-span-2 row-start-2 flex max-w-full items-center justify-self-stretch overflow-x-auto rounded-full border p-1 shadow-sm backdrop-blur xl:col-span-1 xl:col-start-2 xl:row-start-1 xl:justify-self-center xl:overflow-visible ${
-            dark
-              ? "border-white/15 bg-white/8 shadow-black/20"
-              : "hairline bg-white/75 shadow-black/[0.03]"
+          className={`relative isolate col-span-2 row-start-2 max-w-full justify-self-stretch drop-shadow-sm xl:col-span-1 xl:col-start-2 xl:row-start-1 xl:justify-self-center ${
+            dark ? "drop-shadow-[0_12px_18px_rgba(0,0,0,0.22)]" : ""
           }`}
         >
-          {navItems.map((item) => (
-            <Link
-              className={accountClassName}
-              href={item.href}
-              key={item.href}
-            >
-              {item.label}
-            </Link>
-          ))}
+          <svg
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 -z-10 h-full w-full"
+            preserveAspectRatio="none"
+            viewBox="0 0 600 64"
+          >
+            <path
+              d="M38 2C18 2 4 10 4 20C4 26 18 27 18 32C18 37 4 38 4 44C4 54 18 62 38 62C110 62 126 56 168 58C225 61 235 56 300 56C365 56 375 61 432 58C474 56 490 62 562 62C582 62 596 54 596 44C596 38 582 37 582 32C582 27 596 26 596 20C596 10 582 2 562 2C490 2 474 8 432 6C375 3 365 8 300 8C235 8 225 3 168 6C126 8 110 2 38 2Z"
+              fill={dark ? "rgba(255,255,255,0.09)" : "rgba(255,255,255,0.86)"}
+              stroke={dark ? "rgba(255,255,255,0.22)" : "rgba(148,163,184,0.58)"}
+              vectorEffect="non-scaling-stroke"
+            />
+          </svg>
+
+          <div className="flex min-w-0 items-center overflow-x-auto px-7 py-2 sm:px-10 xl:overflow-visible">
+            {navItems.map((item) => (
+              <Link
+                className={accountClassName}
+                href={item.href}
+                key={item.href}
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
         </div>
 
         <div className="col-start-2 row-start-1 flex min-w-0 items-center justify-self-end xl:col-start-3">
