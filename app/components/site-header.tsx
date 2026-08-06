@@ -52,23 +52,25 @@ export async function SiteHeader({ tone = "light" }: SiteHeaderProps) {
             viewBox="0 0 600 64"
           >
             <path
-              d="M38 2C18 2 4 10 4 20C4 26 18 27 18 32C18 37 4 38 4 44C4 54 18 62 38 62C110 62 126 56 168 58C225 61 235 56 300 56C365 56 375 61 432 58C474 56 490 62 562 62C582 62 596 54 596 44C596 38 582 37 582 32C582 27 596 26 596 20C596 10 582 2 562 2C490 2 474 8 432 6C375 3 365 8 300 8C235 8 225 3 168 6C126 8 110 2 38 2Z"
+              d="M44 5H556C578 5 594 13 594 23C594 29 584 30 584 32C584 34 594 35 594 41C594 51 578 59 556 59H44C22 59 6 51 6 41C6 35 16 34 16 32C16 30 6 29 6 23C6 13 22 5 44 5Z"
               fill={dark ? "rgba(255,255,255,0.09)" : "rgba(255,255,255,0.86)"}
               stroke={dark ? "rgba(255,255,255,0.22)" : "rgba(148,163,184,0.58)"}
               vectorEffect="non-scaling-stroke"
             />
           </svg>
 
-          <div className="flex min-w-0 items-center overflow-x-auto px-7 py-2 sm:px-10 xl:overflow-visible">
-            {navItems.map((item) => (
-              <Link
-                className={accountClassName}
-                href={item.href}
-                key={item.href}
-              >
-                {item.label}
-              </Link>
-            ))}
+          <div className="min-w-0 overflow-x-auto xl:overflow-visible">
+            <div className="mx-auto flex w-max min-w-full items-center justify-center px-7 py-2 text-center sm:px-10">
+              {navItems.map((item) => (
+                <Link
+                  className={accountClassName}
+                  href={item.href}
+                  key={item.href}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
 
