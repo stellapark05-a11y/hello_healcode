@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { isValidUsername, normalizeUsername, usernameToAuthEmail } from "@/lib/usernames";
+import { isValidUsername, usernameToAuthEmail } from "@/lib/usernames";
+import { supabaseFetch } from "@/lib/supabase";
 
 type LoginResponse = {
   access_token: string;
@@ -34,9 +35,29 @@ export async function POST(request: Request) {
     return NextResponse.redirect(new URL("/login?error=username", request.url), 303);
   }
 
-  const email = isEmail
-    ? identifier
-    : usernameToAuthEmail(normalizeUsername(identifier));
+  let email = identifier;
+  let expectedUserId: string | undefined;
+  if (!isEmail) {
+    try {
+      const profiles = await supabaseFetch<{ id: string }[]>(
+        `/rest/v1/profiles?username=eq.${encodeURIComponent(identifier)}&select=id&limit=1`,
+        { cache: "no-store" },
+        true,
+      );
+      expectedUserId = profiles[0]?.id;
+      email = usernameToAuthEmail(identifier);
+      if (expectedUserId) {
+        const account = await supabaseFetch<{ email?: string }>(
+          `/auth/v1/admin/users/${expectedUserId}`,
+          { cache: "no-store" },
+          true,
+        );
+        email = account.email ?? email;
+      }
+    } catch {
+      return NextResponse.redirect(new URL("/login?error=service", request.url), 303);
+    }
+  }
 
   const response = await fetch(`${supabaseUrl}/auth/v1/token?grant_type=password`, {
     method: "POST",
@@ -48,10 +69,14 @@ export async function POST(request: Request) {
   });
 
   if (!response.ok) {
-    return NextResponse.redirect(new URL("/login?error=invalid", request.url), 303);
+    const error = response.status === 429 || response.status >= 500 ? "service" : "invalid";
+    return NextResponse.redirect(new URL(`/login?error=${error}`, request.url), 303);
   }
 
   const data = (await response.json()) as LoginResponse;
+  if (expectedUserId && data.user.id !== expectedUserId) {
+    return NextResponse.redirect(new URL("/login?error=invalid", request.url), 303);
+  }
   const profileResponse = await fetch(
     `${supabaseUrl}/rest/v1/profiles?id=eq.${data.user.id}&select=status&limit=1`,
     {
