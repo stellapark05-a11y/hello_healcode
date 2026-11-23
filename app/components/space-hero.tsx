@@ -107,7 +107,7 @@ export function SpaceHero() {
               {site.primaryAction}
             </a>
             <a className="space-secondary-button" href="#activities">
-              주요 활동
+              활동 보기
             </a>
             <a className="space-secondary-button" href="/login">
               {site.secondaryAction}

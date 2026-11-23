@@ -30,7 +30,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             </p>
           ) : null}
           {params?.error ? (
-            <p className="mt-5 rounded-2xl bg-[#ffe7e8] px-4 py-3 text-sm">
+            <p role="alert" className="mt-5 rounded-2xl bg-[#ffe7e8] px-4 py-3 text-sm">
               {params.error === "invalid"
                 ? "이메일·아이디 또는 비밀번호를 다시 확인하세요."
                 : params.error === "inactive"
@@ -48,16 +48,16 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
               <p className="eyebrow">Existing member</p>
               <h2 className="mt-4 text-3xl font-medium tracking-tight">멤버 로그인</h2>
               <p className="mt-3 text-sm leading-6 text-[#64748b]">
-                내 포인트와 활동 기록을 확인합니다.
+                승인된 아이디로 로그인하세요. 이메일로 발급받은 기존 계정은 이메일을 입력하세요.
               </p>
               <form action="/api/auth/login" className="mt-7 grid gap-5" method="post">
                 <label className="grid gap-2">
-                  <span className="text-sm text-[#64748b]">이메일 또는 아이디</span>
+                  <span className="text-sm text-[#64748b]">아이디</span>
                   <input
                     className="rounded-2xl border hairline bg-[#f8fafc] px-4 py-3 outline-none transition focus:border-[#111827]"
                     name="identifier"
                     autoComplete="username"
-                    placeholder="name@example.com 또는 아이디"
+                    placeholder="아이디 또는 기존 계정 이메일"
                     required
                     type="text"
                   />

@@ -4,7 +4,7 @@ export const site = {
   eyebrow: "HEALTHCARE × TECHNOLOGY COMMUNITY",
   description:
     "의료인과 공학도가 서로의 언어를 배우고, 환자와 의료 현장을 먼저 이해하며, 필요한 해결책을 함께 만들어가는 커뮤니티입니다.",
-  primaryAction: "HealCode 소개",
+  primaryAction: "팀 소개",
   secondaryAction: "가입 신청 · 멤버 로그인",
   contactEmail: "yj7832@korea.ac.kr",
   discordUrl: "https://discord.com/",
@@ -13,10 +13,11 @@ export const site = {
 };
 
 export const navItems = [
-  { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+  { label: "소개", href: "/about" },
+  { label: "방식", href: "/method" },
   { label: "Projects", href: "/project" },
-  { label: "Activities", href: "/activities" },
+  { label: "활동", href: "/activities" },
+  { label: "로드맵", href: "/roadmap" },
   { label: "Contact & Join", href: "/contact" },
 ];
 

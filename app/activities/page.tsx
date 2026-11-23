@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { InteriorPage } from "../components/interior-page";
-import { activities } from "@/lib/site-data";
+import { activities, pointActivities, site, tierCuts } from "@/lib/site-data";
 
 export const metadata: Metadata = {
   title: "Activities | HealCode",
@@ -57,6 +57,12 @@ export default function ActivitiesPage() {
           ))}
         </div>
       </div>
+      <section className="mt-14">
+        <h2 className="text-3xl font-medium">활동 포인트와 티어</h2>
+        <dl className="my-6 grid grid-cols-2 gap-4 sm:grid-cols-3">{tierCuts.map(({ tier, points }) => <div className="border-b py-3" key={tier}><dt>{tier}</dt><dd className="font-semibold">{points}점</dd></div>)}</dl>
+        {pointActivities.map(({ category, items }) => <div className="mt-6" key={category}><h3 className="text-xl font-semibold">{category}</h3><dl>{items.map(({ name, points, note }) => <div className="flex justify-between gap-4 border-b py-3" key={name}><dt>{name}<small className="block text-[#64748b]">{note}</small></dt><dd className="shrink-0">{points}점</dd></div>)}</dl></div>)}
+        <a className="mt-6 inline-block underline" href={site.notionTierUrl}>노션에서 운영 기준 보기</a>
+      </section>
     </InteriorPage>
   );
 }

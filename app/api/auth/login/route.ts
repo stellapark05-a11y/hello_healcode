@@ -25,13 +25,13 @@ export async function POST(request: Request) {
   const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseAnonKey) {
-    return NextResponse.redirect(new URL("/login?error=config", request.url));
+    return NextResponse.redirect(new URL("/login?error=config", request.url), 303);
   }
 
   const isEmail = identifier.includes("@");
 
   if ((!isEmail && !isValidUsername(identifier)) || (isEmail && identifier.length > 254)) {
-    return NextResponse.redirect(new URL("/login?error=username", request.url));
+    return NextResponse.redirect(new URL("/login?error=username", request.url), 303);
   }
 
   const email = isEmail
@@ -48,7 +48,7 @@ export async function POST(request: Request) {
   });
 
   if (!response.ok) {
-    return NextResponse.redirect(new URL("/login?error=invalid", request.url));
+    return NextResponse.redirect(new URL("/login?error=invalid", request.url), 303);
   }
 
   const data = (await response.json()) as LoginResponse;
@@ -62,12 +62,13 @@ export async function POST(request: Request) {
       cache: "no-store",
     },
   );
-  const profiles = profileResponse.ok
-    ? ((await profileResponse.json()) as LoginProfile[])
-    : [];
+  if (!profileResponse.ok) {
+    return NextResponse.redirect(new URL("/login?error=service", request.url), 303);
+  }
+  const profiles = (await profileResponse.json()) as LoginProfile[];
 
   if (profiles[0]?.status !== "active") {
-    return NextResponse.redirect(new URL("/login?error=inactive", request.url));
+    return NextResponse.redirect(new URL("/login?error=inactive", request.url), 303);
   }
 
   const cookieStore = await cookies();
@@ -86,5 +87,5 @@ export async function POST(request: Request) {
     path: "/",
   });
 
-  return NextResponse.redirect(new URL("/dashboard", request.url));
+  return NextResponse.redirect(new URL("/dashboard", request.url), 303);
 }
