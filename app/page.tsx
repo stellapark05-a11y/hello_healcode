@@ -10,135 +10,43 @@ export default function Home() {
       </div>
       <SpaceHero />
 
-      <section className="bg-[#f2f5f9] py-20 text-[#111827]" id="about">
-        <div className="section-shell">
-          <div className="mx-auto max-w-5xl">
-            <p className="eyebrow">01 / ABOUT</p>
-            <h2 className="mt-4 max-w-3xl text-4xl font-medium leading-tight tracking-tight">
-              의료와 기술 사이의 언어를 연결합니다.
-            </h2>
-            <p className="mt-5 max-w-2xl leading-8 text-[#64748b]">
-              좋은 의료 기술은 구현 능력만으로 완성되지 않습니다. HealCode는 의료
-              현장의 맥락을 나누는 Healer와 기술을 설계하고 구현하는 Crafter가
-              서로에게 배우고, 작은 실험과 프로젝트를 통해 문제를 함께 풀어가는
-              커뮤니티입니다.
-            </p>
+      <div className="home-journal">
+        <section id="about" className="journal-band">
+          <h2>팀 소개</h2>
+          <div>
+            <h3>진료실에서 나온 질문을<br />작은 프로젝트로 옮깁니다.</h3>
+            <p>힐코드에는 의료인과 공학도가 함께 있습니다. 의료인은 현장에서 겪은 일을 들려주고, 개발자는 그 이야기를 바탕으로 첫 버전을 만듭니다. 같이 써 보면서 다음에 고칠 곳을 찾습니다.</p>
+            <a href="/about">힐코드 소개 읽기</a>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section
-        className="border-t hairline bg-white py-20 text-[#111827]"
-        id="project"
-      >
-        <div className="section-shell">
-          <div className="mx-auto max-w-5xl">
-            <p className="eyebrow">02 / PROJECT SPOTLIGHT</p>
-            <h2 className="mt-4 max-w-3xl text-4xl font-medium leading-tight tracking-tight">
-              POMR Coach
-            </h2>
-            <p className="mt-5 max-w-2xl leading-8 text-[#64748b]">
-              임상 기록과 사고 과정을 구조화하는 방법을 탐색하는 멤버 주도
-              프로젝트입니다.
-            </p>
-
-            <a
-              className="mt-8 inline-flex rounded-full bg-[#111827] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#020617]"
-              href="https://pomr-coach-516460607949.asia-northeast3.run.app/"
-              rel="noreferrer"
-              target="_blank"
-            >
-              POMR Coach 살펴보기
-            </a>
+        <section id="project" className="journal-band project-band">
+          <h2>멤버 프로젝트</h2>
+          <div>
+            <h3 lang="en">POMR Coach</h3>
+            <p>임상 기록을 쓰면서 생각의 순서를 짚어 보는 도구입니다. 힐코드 멤버들이 문제 중심 의무기록(POMR)을 주제로 만들고 있습니다.</p>
+            <a href="https://pomr-coach-516460607949.asia-northeast3.run.app/" target="_blank" rel="noreferrer">POMR Coach 열기</a>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section
-        className="border-t hairline bg-[#f2f5f9] py-20 text-[#111827]"
-        id="activities"
-      >
-        <div className="section-shell">
-          <div className="mx-auto max-w-5xl">
-            <p className="eyebrow">03 / ACTIVITIES</p>
-            <h2 className="mt-4 max-w-3xl text-4xl font-medium leading-tight tracking-tight">
-              How We Learn &amp; Build
-            </h2>
-
-            <div className="mt-10 grid gap-4 md:grid-cols-2">
-              <article className="rounded-2xl border hairline bg-white p-6 shadow-sm shadow-black/[0.02]">
-                <h3 className="text-2xl font-medium tracking-tight">모각코</h3>
-                <p className="mt-2 text-sm font-semibold text-[#64748b]">
-                  함께 접속해 각자의 작업을 이어가는 집중 세션
-                </p>
-                <p className="mt-4 text-sm leading-7 text-[#64748b]">
-                  각자 진행 중인 학습이나 프로젝트를 가져와 정해진 시간 동안 함께
-                  작업합니다. 완벽한 결과보다 꾸준히 시작하고 이어가는 것을 돕는
-                  시간입니다.
-                </p>
-              </article>
-
-              <article className="rounded-2xl border hairline bg-white p-6 shadow-sm shadow-black/[0.02]">
-                <h3 className="text-2xl font-medium tracking-tight">
-                  Monthly Scrum
-                </h3>
-                <p className="mt-2 text-sm font-semibold text-[#64748b]">
-                  진행 과정과 의료 현장의 인사이트를 나누는 월간 세션
-                </p>
-                <p className="mt-4 text-sm leading-7 text-[#64748b]">
-                  프로젝트 진행 상황, 의료 현장에서 발견한 질문, 새롭게 배운 점과
-                  막힌 점을 공유합니다. 서로 피드백하고 다음에 시도할 작은 행동을
-                  정리합니다.
-                </p>
-              </article>
-            </div>
+        <section id="activities" className="journal-band">
+          <h2>정기 활동</h2>
+          <div className="journal-agenda">
+            <article><span>집중 세션</span><h3>모각코</h3><p>같은 시간에 접속해 각자의 코드를 쓰고 공부합니다. 지금 하고 있는 작업을 가져오면 됩니다.</p></article>
+            <article><span>매월</span><h3>Monthly Scrum</h3><p>한 달 동안 만든 것과 막힌 지점을 꺼내 놓습니다. 동료의 피드백을 듣고 다음에 해 볼 일을 정합니다.</p></article>
+            <a href="/activities">활동과 포인트 기준 보기</a>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section
-        className="border-t hairline bg-white py-20 text-[#111827]"
-        id="contact"
-      >
-        <div className="section-shell">
-          <div className="mx-auto max-w-5xl">
-            <p className="eyebrow">04 / CONTACT &amp; JOIN</p>
-            <h2 className="mt-4 max-w-3xl text-4xl font-medium leading-tight tracking-tight">
-              Contact &amp; Join HealCode
-            </h2>
-            <p className="mt-5 max-w-2xl leading-8 text-[#64748b]">
-              HealCode와 함께 배우고 만들고 싶다면 가입 신청서를 남겨주세요.
-              운영자가 내용을 확인한 뒤 멤버 계정과 참여 방법을 안내합니다.
-            </p>
-
-            <div className="mt-10 grid gap-4 md:grid-cols-2">
-              <article className="rounded-2xl border hairline bg-[#f8fafc] p-6">
-                <p className="text-sm font-semibold text-[#64748b]">운영 문의</p>
-                <h3 className="mt-3 text-2xl font-medium tracking-tight">임예제</h3>
-                <a
-                  className="mt-4 inline-block text-sm leading-7 text-[#64748b] underline underline-offset-4"
-                  href="mailto:yj7832@korea.ac.kr"
-                >
-                  yj7832@korea.ac.kr
-                </a>
-              </article>
-
-              <article className="rounded-2xl border hairline bg-[#e6edf5] p-6">
-                <p className="text-sm font-semibold text-[#64748b]">가입 신청</p>
-                <h3 className="mt-3 text-2xl font-medium tracking-tight">
-                  Website Application
-                </h3>
-                <a
-                  className="mt-5 inline-flex rounded-full bg-[#111827] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#020617]"
-                  href="/login#apply"
-                >
-                  가입 신청서 작성
-                </a>
-              </article>
-            </div>
+        <section id="contact" className="journal-band">
+          <h2>문의 · 가입</h2>
+          <div>
+            <h3>힐코드에 함께하려면</h3>
+            <p>신청서를 남겨 주시면 운영진이 검토한 뒤 참여 방법을 안내합니다.</p>
+            <div className="journal-links"><a href="/login#apply">가입 신청서 작성</a><a href="mailto:yj7832@korea.ac.kr">운영진 임예제에게 메일</a></div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
       <SiteFooter />
     </main>

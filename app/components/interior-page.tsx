@@ -11,7 +11,6 @@ type InteriorPageProps = {
 
 export function InteriorPage({
   children,
-  eyebrow,
   intro,
   title,
 }: InteriorPageProps) {
@@ -21,11 +20,10 @@ export function InteriorPage({
         <SiteHeader />
       </div>
 
-      <section className="border-b hairline bg-[#07080d] py-20 text-white sm:py-28">
+      <section className="border-b hairline bg-[#07080d] py-12 text-white sm:py-16">
         <div className="section-shell">
           <div className="mx-auto max-w-5xl">
-            <p className="space-eyebrow">{eyebrow}</p>
-            <h1 className="mt-5 max-w-4xl text-5xl font-semibold leading-none tracking-tight sm:text-7xl">
+            <h1 className="max-w-4xl text-4xl font-semibold leading-none tracking-tight sm:text-6xl">
               {title}
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-white/62 sm:text-lg">

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { metrics, site } from "@/lib/site-data";
+import { site } from "@/lib/site-data";
 
 const LOGO_DEPTH_LAYERS = 14;
 
@@ -64,9 +64,8 @@ export function SpaceHero() {
     <section className="space-hero" ref={heroRef}>
       <div className="space-stars" />
       <div className="space-grid" />
-      <div className="section-shell relative z-10 flex min-h-screen flex-col justify-between pb-8 pt-6">
+      <div className="section-shell hero-content relative z-10 flex flex-col pb-14 pt-12">
         <div className="flex flex-1 flex-col items-center justify-center pt-20 text-center sm:pt-24">
-          <p className="space-eyebrow">{site.eyebrow}</p>
           <div className="space-object-stage" aria-hidden="true">
             <div className="space-object" ref={objectRef}>
               {Array.from({ length: LOGO_DEPTH_LAYERS }, (_, index) => (
@@ -102,27 +101,16 @@ export function SpaceHero() {
           <p className="mt-4 max-w-2xl text-sm leading-7 text-white/60 sm:text-base">
             {site.description}
           </p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+          <div className="mt-7 flex flex-wrap justify-center gap-3">
             <a className="space-primary-button" href="#about">
               {site.primaryAction}
             </a>
             <a className="space-secondary-button" href="#activities">
               활동 보기
             </a>
-            <a className="space-secondary-button" href="/login">
-              {site.secondaryAction}
-            </a>
           </div>
         </div>
 
-        <div className="space-metrics">
-          {metrics.map((item) => (
-            <div className="space-metric" key={item.label}>
-              <p>{item.label}</p>
-              <strong>{item.value}</strong>
-            </div>
-          ))}
-        </div>
       </div>
     </section>
   );

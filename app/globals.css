@@ -61,7 +61,7 @@ body {
     radial-gradient(circle at top, rgba(0, 201, 123, 0.16), transparent 28rem),
     radial-gradient(circle at 75% 30%, rgba(255, 146, 151, 0.16), transparent 24rem),
     linear-gradient(180deg, #05060a 0%, #090b12 58%, #0d1018 100%);
-  min-height: 100vh;
+  min-height: 0;
   overflow: hidden;
   position: relative;
 }
@@ -222,6 +222,40 @@ body {
   color: #ffffff;
   font-size: 0.9rem;
   text-align: right;
+}
+
+.hero-content { min-height: 88svh; }
+.home-journal { background: #fbfcfa; color: #182421; }
+.journal-band {
+  display: grid;
+  grid-template-columns: minmax(9rem, 1fr) minmax(0, 3fr);
+  gap: 3rem;
+  border-bottom: 1px solid #cfd8d2;
+  padding: 5rem max(1.5rem, calc((100% - 64rem) / 2));
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+.journal-band h2 { font-size: .9rem; font-weight: 650; padding-top: .45rem; }
+.journal-band h3 { font-size: 2.65rem; line-height: 1.28; font-weight: 540; }
+.journal-band p { max-width: 39rem; margin-top: 1.25rem; line-height: 1.9; color: #475650; }
+.journal-band a { display: inline-block; margin-top: 1.5rem; padding-block: .25rem; text-decoration: underline; text-underline-offset: .35em; }
+.journal-band a:hover { color: #00754d; }
+.project-band { background: #dfebe5; }
+.project-band h3 { font-family: Georgia, serif; font-size: 4rem; }
+.journal-agenda article + article { border-top: 1px solid #cfd8d2; margin-top: 1.75rem; padding-top: 1.75rem; }
+.journal-agenda span { display: block; font-size: .8rem; color: #50635a; margin-bottom: .5rem; }
+.journal-agenda h3 { font-size: 1.85rem; }
+.journal-agenda p { margin-top: .65rem; }
+.journal-links { display: flex; flex-wrap: wrap; gap: 0 1.5rem; }
+:focus-visible { outline: 2px solid #008856; outline-offset: 4px; }
+@media (max-width: 640px) {
+  .journal-band { grid-template-columns: 1fr; gap: 1.25rem; padding-block: 2.75rem; }
+  .journal-band h3 { font-size: 1.85rem; }
+  .project-band h3 { font-size: 2.75rem; }
+  .journal-agenda h3 { font-size: 1.55rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
 
 @media (max-width: 767px) {

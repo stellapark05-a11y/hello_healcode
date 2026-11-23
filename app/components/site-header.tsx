@@ -12,10 +12,10 @@ export async function SiteHeader({ tone = "light" }: SiteHeaderProps) {
   const user = await getCurrentUser();
   const accountItems = user
     ? [
-        { label: "My Page", href: "/dashboard" },
+        { label: "내 공간", href: "/dashboard" },
         ...(isManager(user) ? [{ label: "Manager", href: "/manager" }] : []),
       ]
-    : [{ label: "Member Login", href: "/login" }];
+    : [{ label: "멤버 로그인", href: "/login" }];
   const accountClassName = `whitespace-nowrap rounded-full px-3 py-2 text-xs font-medium transition sm:px-4 sm:text-sm ${
     dark
       ? "text-white/70 hover:bg-white hover:text-[#090b12]"
@@ -83,7 +83,7 @@ export async function SiteHeader({ tone = "light" }: SiteHeaderProps) {
           {user ? (
             <form action="/api/auth/logout" method="post">
               <button className={accountClassName} type="submit">
-                Logout
+                로그아웃
               </button>
             </form>
           ) : null}

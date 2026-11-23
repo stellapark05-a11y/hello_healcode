@@ -15,10 +15,10 @@ export const site = {
 export const navItems = [
   { label: "소개", href: "/about" },
   { label: "방식", href: "/method" },
-  { label: "Projects", href: "/project" },
+  { label: "프로젝트", href: "/project" },
   { label: "활동", href: "/activities" },
   { label: "로드맵", href: "/roadmap" },
-  { label: "Contact & Join", href: "/contact" },
+  { label: "문의", href: "/contact" },
 ];
 
 export const metrics = [
