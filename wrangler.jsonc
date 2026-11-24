@@ -1,0 +1,17 @@
+{
+  "name": "healcode-preview-2150379",
+  "d1_databases": [{
+    "binding": "DB",
+    "database_name": "healcode-members",
+    "database_id": "f2299865-b894-4b7d-a753-f3eab3f24e59",
+    "migrations_dir": "cloudflare/migrations"
+  }],
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-11-24",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "workers_dev": true
+}
