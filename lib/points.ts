@@ -1,4 +1,4 @@
-import { getSessionToken } from "./auth";
+import { database } from "./db";
 
 export type PointTransaction = {
   id: string;
@@ -21,28 +21,7 @@ export function getPointTier(points: number) {
 }
 
 export async function getMyPointTransactions(memberId: string) {
-  const token = await getSessionToken();
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!token || !supabaseUrl || !supabaseAnonKey) {
-    return [];
-  }
-
-  const response = await fetch(
-    `${supabaseUrl}/rest/v1/point_transactions?member_id=eq.${memberId}&select=id,delta,balance_after,reason,created_at&order=created_at.desc&limit=20`,
-    {
-      headers: {
-        apikey: supabaseAnonKey,
-        Authorization: `Bearer ${token}`,
-      },
-      cache: "no-store",
-    },
-  );
-
-  if (!response.ok) {
-    return [];
-  }
-
-  return (await response.json()) as PointTransaction[];
+  const db = await database();
+  return (await db.prepare("SELECT id, delta, balance_after, reason, created_at FROM point_transactions WHERE member_id=? ORDER BY created_at DESC LIMIT 20")
+    .bind(memberId).all<PointTransaction>()).results;
 }

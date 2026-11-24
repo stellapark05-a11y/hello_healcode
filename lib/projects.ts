@@ -1,5 +1,4 @@
-import { getSessionToken } from "./auth";
-
+import { database } from "./db";
 export type Project = {
   id: string;
   owner_id: string;
@@ -12,28 +11,7 @@ export type Project = {
 };
 
 export async function getMyProjects(userId: string): Promise<Project[]> {
-  const token = await getSessionToken();
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!token || !supabaseUrl || !supabaseAnonKey) {
-    return [];
-  }
-
-  const response = await fetch(
-    `${supabaseUrl}/rest/v1/projects?owner_id=eq.${userId}&select=*&order=created_at.desc`,
-    {
-      headers: {
-        apikey: supabaseAnonKey,
-        Authorization: `Bearer ${token}`,
-      },
-      cache: "no-store",
-    },
-  );
-
-  if (!response.ok) {
-    return [];
-  }
-
-  return (await response.json()) as Project[];
+  const db = await database();
+  return (await db.prepare("SELECT * FROM projects WHERE owner_id=? ORDER BY created_at DESC")
+    .bind(userId).all<Project>()).results;
 }

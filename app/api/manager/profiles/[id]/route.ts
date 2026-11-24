@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser, isManager } from "@/lib/auth";
-import { getSupabaseConfig } from "@/lib/supabase";
+import { database } from "@/lib/db";
 
 type RouteContext = {
   params: Promise<unknown>;
@@ -17,29 +17,12 @@ export async function POST(request: Request, context: RouteContext) {
   const formData = await request.formData();
   const status = String(formData.get("status") ?? "pending");
   const canUploadPublic = formData.get("can_upload_public") === "true";
-  const config = getSupabaseConfig();
+
 
   if (!["pending", "active", "suspended"].includes(status)) {
     return NextResponse.redirect(new URL("/manager?error=profile", request.url));
   }
 
-  const response = await fetch(`${config.url}/rest/v1/profiles?id=eq.${id}`, {
-    method: "PATCH",
-    headers: {
-      apikey: config.serviceRoleKey,
-      Authorization: `Bearer ${config.serviceRoleKey}`,
-      "Content-Type": "application/json",
-      Prefer: "return=minimal",
-    },
-    body: JSON.stringify({
-      status,
-      can_upload_public: canUploadPublic,
-    }),
-  });
-
-  if (!response.ok) {
-    return NextResponse.redirect(new URL("/manager?error=profile", request.url));
-  }
-
-  return NextResponse.redirect(new URL("/manager?updated=profile", request.url));
+  await (await database()).prepare("UPDATE profiles SET status=?,can_upload_public=? WHERE id=?").bind(status,Number(canUploadPublic),id).run();
+  return NextResponse.redirect(new URL("/manager?updated=profile",request.url),303);
 }

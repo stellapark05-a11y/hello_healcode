@@ -13,5 +13,6 @@
     "directory": ".open-next/assets",
     "binding": "ASSETS"
   },
+  "ratelimits": [{ "name": "AUTH_LIMIT", "namespace_id": "2150379", "simple": { "limit": 12, "period": 60 } }],
   "workers_dev": true
 }

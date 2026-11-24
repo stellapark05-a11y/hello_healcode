@@ -1,4 +1,6 @@
 import { cookies } from "next/headers";
+import { database } from "./db";
+import { digest } from "./credentials";
 
 export type SessionUser = {
   id: string;
@@ -11,77 +13,17 @@ export type SessionUser = {
   canUploadPublic: boolean;
 };
 
-type SupabaseUserResponse = {
-  id: string;
-  email: string;
-  user_metadata?: {
-    username?: string;
-  };
-};
-
-type ProfileResponse = {
-  username: string;
-  display_name: string | null;
-  role: string;
-  status: string;
-  points: number;
-  can_upload_public: boolean;
-};
-
-export async function getSessionToken() {
-  const cookieStore = await cookies();
-  return cookieStore.get("hc_access_token")?.value;
-}
 
 export async function getCurrentUser(): Promise<SessionUser | null> {
-  const token = await getSessionToken();
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-
-  if (!token || !supabaseUrl || !supabaseAnonKey) {
-    return null;
-  }
-
-  const response = await fetch(`${supabaseUrl}/auth/v1/user`, {
-    headers: {
-      apikey: supabaseAnonKey,
-      Authorization: `Bearer ${token}`,
-    },
-    cache: "no-store",
-  });
-
-  if (!response.ok) {
-    return null;
-  }
-
-  const user = (await response.json()) as SupabaseUserResponse;
-
-  const profileResponse = await fetch(
-    `${supabaseUrl}/rest/v1/profiles?id=eq.${user.id}&select=username,display_name,role,status,points,can_upload_public`,
-    {
-      headers: {
-        apikey: supabaseAnonKey,
-        Authorization: `Bearer ${token}`,
-      },
-      cache: "no-store",
-    },
-  );
-
-  const profiles = profileResponse.ok
-    ? ((await profileResponse.json()) as ProfileResponse[])
-    : [];
-  const profile = profiles[0];
-
-  return {
-    id: user.id,
-    email: user.email,
-    username: profile?.username ?? user.user_metadata?.username ?? null,
-    displayName: profile?.display_name ?? null,
-    role: profile?.role ?? "member",
-    status: profile?.status ?? "pending",
-    points: profile?.points ?? 0,
-    canUploadPublic: profile?.can_upload_public ?? false,
-  };
+  const value = (await cookies()).get("hc_session")?.value;
+  if (!value || !/^[a-f0-9]{64}$/.test(value)) return null;
+  const db = await database();
+  const row = await db.prepare(`SELECT p.id, a.email, p.username, p.display_name AS displayName,
+    p.role, p.status, p.points, p.can_upload_public AS canUploadPublic
+    FROM sessions s JOIN profiles p ON p.id=s.member_id JOIN accounts a ON a.member_id=p.id
+    WHERE s.token_hash=? AND s.expires_at>unixepoch() AND p.status='active'`)
+    .bind(digest(value)).first<SessionUser>();
+  return row && { ...row, canUploadPublic: Boolean(row.canUploadPublic) };
 }
 
 export function isManager(user: SessionUser | null): user is SessionUser {

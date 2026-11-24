@@ -1,91 +1,24 @@
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
-import { getSupabaseConfig } from "@/lib/supabase";
-
-type InviteUser = {
-  id: string;
-  email?: string;
-};
-
+import { database, allowAuth } from "@/lib/db";
+import { digest, derivePassword, token } from "@/lib/credentials";
 export async function POST(request: Request) {
-  const body = (await request.json().catch(() => null)) as {
-    accessToken?: string;
-    refreshToken?: string;
-    expiresIn?: number;
-  } | null;
-  const accessToken = body?.accessToken?.trim();
-  const refreshToken = body?.refreshToken?.trim();
-
-  if (!accessToken || !refreshToken) {
-    return NextResponse.json({ error: "invalid_session" }, { status: 400 });
-  }
-
-  const config = getSupabaseConfig();
-  const userResponse = await fetch(`${config.url}/auth/v1/user`, {
-    headers: {
-      apikey: config.anonKey,
-      Authorization: `Bearer ${accessToken}`,
-    },
-    cache: "no-store",
-  });
-
-  if (!userResponse.ok) {
-    return NextResponse.json({ error: "expired_invite" }, { status: 401 });
-  }
-
-  const user = (await userResponse.json()) as InviteUser;
-  const profileResponse = await fetch(
-    `${config.url}/rest/v1/profiles?id=eq.${user.id}`,
-    {
-      method: "PATCH",
-      headers: {
-        apikey: config.serviceRoleKey,
-        Authorization: `Bearer ${config.serviceRoleKey}`,
-        "Content-Type": "application/json",
-        Prefer: "return=minimal",
-      },
-      body: JSON.stringify({ status: "active" }),
-    },
-  );
-
-  if (!profileResponse.ok) {
-    return NextResponse.json({ error: "profile_update" }, { status: 500 });
-  }
-
-  if (user.email) {
-    const applicationUrl = new URL(
-      `${config.url}/rest/v1/membership_applications`,
-    );
-    applicationUrl.searchParams.set("email", `eq.${user.email}`);
-    applicationUrl.searchParams.set("status", "eq.invited");
-    await fetch(applicationUrl, {
-      method: "PATCH",
-      headers: {
-        apikey: config.serviceRoleKey,
-        Authorization: `Bearer ${config.serviceRoleKey}`,
-        "Content-Type": "application/json",
-        Prefer: "return=minimal",
-      },
-      body: JSON.stringify({ status: "approved" }),
-    });
-  }
-
-  const expiresIn = Math.max(60, Math.min(Number(body?.expiresIn) || 3600, 86400));
-  const cookieStore = await cookies();
-  cookieStore.set("hc_access_token", accessToken, {
-    httpOnly: true,
-    maxAge: expiresIn,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-  });
-  cookieStore.set("hc_refresh_token", refreshToken, {
-    httpOnly: true,
-    maxAge: 60 * 60 * 24 * 30,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
-    path: "/",
-  });
-
-  return NextResponse.json({ ok: true });
+  if (!await allowAuth(request)) return new Response(null,{status:429});
+  const body = await request.json().catch(()=>null);
+  if (!body || typeof body.token !== "string" || !/^[a-f0-9]{64}$/.test(body.token) ||
+      typeof body.password !== "string" || body.password.length < 12 || body.password.length > 256)
+    return new Response(null,{status:400});
+  const db = await database();
+  const hash = digest(body.token);
+  const eligible = "SELECT member_id FROM accounts WHERE invite_hash=? AND invite_until>unixepoch() AND password_hash IS NULL";
+  if (!await db.prepare(eligible).bind(hash).first()) return new Response(null,{status:403});
+  const salt = token();
+  const passwordHash = await derivePassword(body.password,salt);
+  const result = await db.batch([
+    db.prepare(`UPDATE profiles SET status='active' WHERE status='invited' AND id IN (${eligible})`).bind(hash),
+    db.prepare(`UPDATE membership_applications SET status='approved' WHERE status='invited' AND id IN
+      (SELECT application_id FROM accounts JOIN profiles ON profiles.id=accounts.member_id WHERE invite_hash=? AND invite_until>unixepoch() AND profiles.status='active')`).bind(hash),
+    db.prepare(`UPDATE accounts SET password_hash=?,salt=?,invite_hash=NULL,invite_until=NULL
+      WHERE invite_hash=? AND invite_until>unixepoch() AND password_hash IS NULL AND member_id IN (SELECT id FROM profiles WHERE status='active')`)
+      .bind(passwordHash,salt,hash),
+  ]);
+  return new Response(null,{status:result[2].meta.changes ? 204 : 403});
 }

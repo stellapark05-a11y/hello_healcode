@@ -38,7 +38,6 @@ export default async function NewProjectPage({ searchParams }: NewProjectPagePro
           <form
             action="/api/projects"
             className="mt-10 grid gap-5"
-            encType="multipart/form-data"
             method="post"
           >
             <label className="grid gap-2">
@@ -54,16 +53,11 @@ export default async function NewProjectPage({ searchParams }: NewProjectPagePro
               />
             </label>
             <label className="grid gap-2">
-              <span className="text-sm text-[#64748b]">프로젝트 링크</span>
-              <input className="rounded-2xl border hairline bg-white px-4 py-3" name="project_url" type="url" />
-            </label>
-            <input name="is_public" type="hidden" value="true" />
-            <label className="grid gap-2">
-              <span className="text-sm text-[#64748b]">결과물 파일</span>
-              <input className="rounded-2xl border hairline bg-white px-4 py-3" name="artifact" type="file" />
+              <span className="text-sm text-[#64748b]">프로젝트 또는 결과물 링크</span>
+              <input className="rounded-2xl border hairline bg-white px-4 py-3" name="project_url" type="url" required />
             </label>
             <button className="mt-2 rounded-full bg-[#111827] px-6 py-3 font-semibold text-white">
-              공개 프로젝트 업로드
+              공개 프로젝트 등록
             </button>
           </form>
         </div>

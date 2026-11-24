@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSupabaseConfig } from "@/lib/supabase";
+import { allowAuth, database } from "@/lib/db";
 
 export async function POST(request: Request) {
   const formData = await request.formData();
@@ -9,31 +9,11 @@ export async function POST(request: Request) {
   const interest = String(formData.get("interest") ?? "").trim();
   const experience = String(formData.get("experience") ?? "").trim();
 
-  if (!name || !email || !discord || !interest) {
-    return NextResponse.redirect(new URL("/login?error=application#apply", request.url));
-  }
-
-  const config = getSupabaseConfig();
-  const response = await fetch(`${config.url}/rest/v1/membership_applications`, {
-    method: "POST",
-    headers: {
-      apikey: config.serviceRoleKey,
-      Authorization: `Bearer ${config.serviceRoleKey}`,
-      "Content-Type": "application/json",
-      Prefer: "return=minimal",
-    },
-    body: JSON.stringify({
-      name,
-      email,
-      discord,
-      interest,
-      experience: experience || null,
-    }),
-  });
-
-  if (!response.ok) {
-    return NextResponse.redirect(new URL("/login?error=application#apply", request.url));
-  }
-
-  return NextResponse.redirect(new URL("/login?applied=1#apply", request.url));
+  const fail = () => NextResponse.redirect(new URL("/login?error=application#apply", request.url), 303);
+  if (!await allowAuth(request) || !name || !email.includes("@") || !discord || !interest ||
+      name.length > 100 || email.length > 254 || discord.length > 100 || interest.length > 4000 || experience.length > 4000) return fail();
+  await (await database()).prepare(`INSERT INTO membership_applications
+    (id,name,email,discord,interest,experience) VALUES (?,?,?,?,?,?)`)
+    .bind(crypto.randomUUID(),name,email.toLowerCase(),discord,interest,experience || null).run();
+  return NextResponse.redirect(new URL("/login?applied=1#apply", request.url),303);
 }

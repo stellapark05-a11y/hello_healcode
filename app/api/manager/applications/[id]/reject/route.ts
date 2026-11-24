@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser, isManager } from "@/lib/auth";
-import { getSupabaseConfig } from "@/lib/supabase";
+import { database } from "@/lib/db";
 
 type RouteContext = {
   params: Promise<unknown>;
@@ -14,21 +14,6 @@ export async function POST(request: Request, context: RouteContext) {
   }
 
   const { id } = (await context.params) as { id: string };
-  const config = getSupabaseConfig();
-
-  await fetch(`${config.url}/rest/v1/membership_applications?id=eq.${id}`, {
-    method: "PATCH",
-    headers: {
-      apikey: config.serviceRoleKey,
-      Authorization: `Bearer ${config.serviceRoleKey}`,
-      "Content-Type": "application/json",
-      Prefer: "return=minimal",
-    },
-    body: JSON.stringify({
-      status: "rejected",
-      reviewed_by: manager?.id,
-    }),
-  });
-
-  return NextResponse.redirect(new URL("/manager", request.url));
+  await (await database()).prepare("UPDATE membership_applications SET status='rejected',reviewed_by=? WHERE id=? AND status='pending'").bind(manager.id,id).run();
+  return NextResponse.redirect(new URL("/manager", request.url),303);
 }

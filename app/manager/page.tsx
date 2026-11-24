@@ -1,3 +1,4 @@
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { MemberPageActions } from "../components/member-page-actions";
 import { SiteFooter } from "../components/site-footer";
@@ -20,6 +21,8 @@ export default async function ManagerPage({ searchParams }: ManagerPageProps) {
     redirect("/dashboard");
   }
 
+  const invite = params?.updated === "invite" ? (await cookies()).get("hc_invite")?.value : null;
+  const host = (await headers()).get("host");
   const [applications, profiles] = await Promise.all([
     getMembershipApplications(),
     getManagedProfiles(),
@@ -55,14 +58,14 @@ export default async function ManagerPage({ searchParams }: ManagerPageProps) {
             {params.error === "points"
               ? "포인트와 사유를 확인해 주세요. 한 번에 ±5,000P까지 반영할 수 있습니다."
               : params.error === "invite"
-                ? "초대 메일을 보내지 못했습니다. 이미 가입된 이메일인지 또는 Supabase 이메일 설정을 확인해 주세요."
+                ? "초대 링크를 발급하지 못했습니다. 아이디와 기존 계정을 확인해 주세요."
               : "요청을 처리하지 못했습니다. 입력값을 다시 확인하세요."}
           </p>
         ) : null}
         {params?.updated ? (
-          <p className="mt-6 rounded-2xl border border-[#cbd5e1] bg-[#e6edf5] px-4 py-3 text-sm">
+          <p className="mt-6 break-all rounded-2xl border border-[#cbd5e1] bg-[#e6edf5] px-4 py-3 text-sm">
             {params.updated === "invite"
-              ? "가입을 승인하고 신청 이메일로 계정 설정 링크를 보냈습니다."
+              ? (invite && host ? `신청자에게 개인 메시지로 전달하세요 (24시간 유효): https://${host}/auth/setup-password#${invite}` : "초대 링크를 다시 발급해 주세요.")
               : "변경 사항을 저장했습니다."}
           </p>
         ) : null}
@@ -138,7 +141,7 @@ export default async function ManagerPage({ searchParams }: ManagerPageProps) {
                             공개 프로젝트 업로드 허용
                           </label>
                           <button className="rounded-full bg-[#111827] px-5 py-3 text-sm font-semibold text-white">
-                            승인하고 초대 메일 보내기
+                            승인하고 초대 링크 발급
                           </button>
                         </form>
                         <form action={`/api/manager/applications/${application.id}/reject`} method="post">
@@ -149,8 +152,7 @@ export default async function ManagerPage({ searchParams }: ManagerPageProps) {
                       </div>
                     ) : application.status === "invited" ? (
                       <div className="min-w-72 rounded-2xl border border-[#cbd5e1] bg-[#f2f5f9] p-4 text-sm leading-6 text-[#64748b]">
-                        신청 이메일로 계정 설정 링크를 보냈습니다. 링크에서 본인이
-                        비밀번호를 만들면 계정이 자동으로 활성화됩니다.
+                        <form method="post" action={`/api/manager/applications/${application.id}/approve`}><button>초대 링크 다시 발급</button></form>
                       </div>
                     ) : null}
                   </div>

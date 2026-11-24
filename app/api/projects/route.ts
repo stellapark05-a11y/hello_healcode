@@ -1,71 +1,18 @@
 import { NextResponse } from "next/server";
-import { getCurrentUser, getSessionToken } from "@/lib/auth";
-import { getSupabaseConfig } from "@/lib/supabase";
-
+import { getCurrentUser } from "@/lib/auth";
+import { database } from "@/lib/db";
 export async function POST(request: Request) {
   const user = await getCurrentUser();
-  const token = await getSessionToken();
-
-  if (!user || !token) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-
-  if (user.status !== "active" || !user.canUploadPublic) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
-  }
-
-  const formData = await request.formData();
-  const title = String(formData.get("title") ?? "");
-  const summary = String(formData.get("summary") ?? "");
-  const projectUrl = String(formData.get("project_url") ?? "") || null;
-  const artifact = formData.get("artifact");
-  const config = getSupabaseConfig();
-  let artifactUrl: string | null = null;
-
-  if (artifact instanceof File && artifact.size > 0) {
-    const safeName = artifact.name.replace(/[^a-zA-Z0-9._-]/g, "-");
-    const path = `${user.id}/${Date.now()}-${safeName}`;
-    const uploadResponse = await fetch(
-      `${config.url}/storage/v1/object/project-artifacts/${path}`,
-      {
-        method: "POST",
-        headers: {
-          apikey: config.serviceRoleKey,
-          Authorization: `Bearer ${config.serviceRoleKey}`,
-          "Content-Type": artifact.type || "application/octet-stream",
-        },
-        body: artifact,
-      },
-    );
-
-    if (!uploadResponse.ok) {
-      return NextResponse.redirect(new URL("/projects/new?error=upload", request.url));
-    }
-
-    artifactUrl = `${config.url}/storage/v1/object/public/project-artifacts/${path}`;
-  }
-
-  const insertResponse = await fetch(`${config.url}/rest/v1/projects`, {
-    method: "POST",
-    headers: {
-      apikey: config.anonKey,
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-      Prefer: "return=minimal",
-    },
-    body: JSON.stringify({
-      owner_id: user.id,
-      title,
-      summary,
-      project_url: projectUrl,
-      artifact_url: artifactUrl,
-      is_public: true,
-    }),
-  });
-
-  if (!insertResponse.ok) {
-    return NextResponse.redirect(new URL("/projects/new?error=create", request.url));
-  }
-
-  return NextResponse.redirect(new URL("/dashboard", request.url));
+  const go = (path:string) => NextResponse.redirect(new URL(path,request.url),303);
+  if (!user) return go("/login");
+  if (!user.canUploadPublic) return go("/dashboard");
+  const form = await request.formData();
+  const title = String(form.get("title") ?? "").trim();
+  const summary = String(form.get("summary") ?? "").trim();
+  const url = String(form.get("project_url") ?? "").trim();
+  if (!title || title.length>200 || !summary || summary.length>5000 || url.length>2048 ||
+      !URL.canParse(url) || !["https:","http:"].includes(new URL(url).protocol)) return go("/projects/new?error=input");
+  await (await database()).prepare("INSERT INTO projects (id,owner_id,title,summary,project_url,is_public) VALUES (?,?,?,?,?,1)")
+    .bind(crypto.randomUUID(),user.id,title,summary,url).run();
+  return go("/dashboard");
 }

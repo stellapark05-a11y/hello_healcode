@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser, isManager } from "@/lib/auth";
-import { getSupabaseConfig } from "@/lib/supabase";
+import { database } from "@/lib/db";
 
 type RouteContext = {
   params: Promise<unknown>;
@@ -28,25 +28,12 @@ export async function POST(request: Request, context: RouteContext) {
     return NextResponse.redirect(new URL("/manager?error=points", request.url));
   }
 
-  const config = getSupabaseConfig();
-  const response = await fetch(`${config.url}/rest/v1/rpc/adjust_member_points`, {
-    method: "POST",
-    headers: {
-      apikey: config.serviceRoleKey,
-      Authorization: `Bearer ${config.serviceRoleKey}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      target_member_id: id,
-      point_delta: delta,
-      point_reason: reason,
-      actor_id: manager.id,
-    }),
-  });
-
-  if (!response.ok) {
-    return NextResponse.redirect(new URL("/manager?error=points", request.url));
-  }
-
-  return NextResponse.redirect(new URL("/manager?updated=points", request.url));
+  const db = await database();
+  const result = await db.batch([
+    db.prepare(`INSERT INTO point_transactions (id,member_id,delta,balance_after,reason,created_by)
+      SELECT ?,id,max(-points,?),max(0,points+?),?,? FROM profiles WHERE id=? AND max(-points,?)<>0`)
+      .bind(crypto.randomUUID(),delta,delta,reason,manager.id,id,delta),
+    db.prepare("UPDATE profiles SET points=max(0,points+?) WHERE id=?").bind(delta,id),
+  ]);
+  return NextResponse.redirect(new URL(result[0].meta.changes ? "/manager?updated=points" : "/manager?error=points",request.url),303);
 }
