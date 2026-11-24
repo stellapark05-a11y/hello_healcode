@@ -1,6 +1,7 @@
 import { SiteFooter } from "./components/site-footer";
 import { SiteHeader } from "./components/site-header";
 import { SpaceHero } from "./components/space-hero";
+import { ActivitySky } from "./components/activity-sky";
 
 export default function Home() {
   return (
@@ -9,6 +10,7 @@ export default function Home() {
         <SiteHeader tone="dark" />
       </div>
       <SpaceHero />
+      <ActivitySky />
 
       <div className="home-journal">
         <section id="about" className="journal-band">
